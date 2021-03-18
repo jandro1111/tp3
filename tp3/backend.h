@@ -10,8 +10,8 @@
 #include <stddef.h>
 #include <math.h>
 // DEFINES //
-#define ANCHOMAX 100
-#define LARGOMAX 100
+#define ANCHOMAX 900
+#define LARGOMAX 420
 #define NOPARAM 0
 #define OK 1
 #define ERROR -1

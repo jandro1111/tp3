@@ -165,7 +165,7 @@ Blob* createblob(long largo, long ancho, long blobcant) {
             (blob + i)->x = (rand() % ancho + 0);
             (blob + i)->y = (rand() % largo + 0);
             (blob + i)->angle = (rand() % 360 + 0);//ahora lo paso a radianes pq math.h usa radianes
-            (blob + i)->angle = (blob->angle * 2 * PI / 360);
+            (blob + i)->angle = ((blob+i)->angle * 2 * PI / 360);
         }
 
     }
