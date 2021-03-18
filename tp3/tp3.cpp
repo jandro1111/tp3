@@ -9,7 +9,7 @@
 using namespace std;
 int main(int argc, char** argv)
 {
-    int cant, blobcant, ticks, b, ancho, largo, blobcantini, modo;
+    int cant, blobcant, ticks, b, blobcantini, modo;
     srand(time(NULL));
     pCallback p = parseCallback;
 
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     Floor* f;
     Blob* blob_p;
     b = 0;
-    f = createfloor(LARGOMAX, ANCHOMAX);
+    f = createfloor(LARGOMAX,ANCHOMAX);
     blob_p = (Blob*)createblob(LARGOMAX, ANCHOMAX, blobcantini);
 
     /*   for (int i = 0; i < LARGOMAX; ++i) {

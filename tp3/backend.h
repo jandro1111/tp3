@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>
+#include<ctime>
 #include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
@@ -48,7 +48,7 @@ double getDistanceBetweenPoints(Point*, Point*);//calculo la distancia entre 2 p
 double getAngleBetweenPoitns(Point*, Point*);//calculo el angulo entre dos puntos
 Point translatePoint(Point* p, double distance, double angle);//traslada un punto una distancia en cierto angulo
 bool isPointEqual(Point* p1, Point* p2);//determina si dos puntos son iguales
-Floor* createfloor(long, long);//crea el piso en el heap
+Floor* createfloor(long,long);//crea el piso en el heap
 void deletefloor(Floor*);//borra el piso del heap
 Blob* createblob(long largo, long ancho, long robotcant);//crea robots en el heap
 void deleteRobot(Blob*);//borra el robot
