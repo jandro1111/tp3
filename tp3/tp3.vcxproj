@@ -140,10 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="backend.cpp" />
+    <ClCompile Include="Blob.cpp" />
     <ClCompile Include="tp3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backend.h" />
+    <ClInclude Include="Blob.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="babyblob.png" />

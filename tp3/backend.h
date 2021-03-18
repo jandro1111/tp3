@@ -28,16 +28,7 @@ typedef struct {
 	Point abajizq;
 	Point arribader;
 }Rect;
-typedef struct {
-	int largo;
-	int ancho;
-	bool* tiles;
-}Floor;
-typedef struct {
-	double x;
-	double y;
-	double angle;
-}Blob;
+
 // PROTOTIPOS //
 int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*));
 //separa parametros/opciones, devuelve la cantidad de opciones y parametros encontrados o un -1 en caso de error
@@ -48,12 +39,6 @@ double getDistanceBetweenPoints(Point*, Point*);//calculo la distancia entre 2 p
 double getAngleBetweenPoitns(Point*, Point*);//calculo el angulo entre dos puntos
 Point translatePoint(Point* p, double distance, double angle);//traslada un punto una distancia en cierto angulo
 bool isPointEqual(Point* p1, Point* p2);//determina si dos puntos son iguales
-Floor* createfloor(long,long);//crea el piso en el heap
-void deletefloor(Floor*);//borra el piso del heap
-Blob* createblob(long largo, long ancho, long robotcant);//crea robots en el heap
-void deleteRobot(Blob*);//borra el robot
-void movrobot(Blob* blob_p, int robotcant, long largo, long ancho, Floor*);//mueve los robots y se fija que no se salgan del piso
-
 
 
 
