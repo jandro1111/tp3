@@ -145,6 +145,13 @@
   <ItemGroup>
     <ClInclude Include="backend.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="babyblob.png" />
+    <Image Include="background.jpg" />
+    <Image Include="food.png" />
+    <Image Include="goodoldblob.png" />
+    <Image Include="grownblob.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
