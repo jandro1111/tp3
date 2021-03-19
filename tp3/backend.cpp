@@ -124,3 +124,24 @@ bool isPointInRect(Point* p, Rect* r) { //que determina si el punto p está dentr
     return a;
 }
 //////////////////////////////////////////////////////////////////////////////////////
+int foodspawn(int foodmax, Food* f,int foodshown) {
+    int i;
+    if (foodshown < foodmax) {//si puedo seguir generando comida
+        if ((rand() % 100 + 1) <= 40) {//prob del 40% de generar una comida
+            for (i = 0; i < MAXFOOD; ++i) {
+                if ((f + i)->shown == false) {
+                    (f + i)->shown = true;//empizo sin mostrar ninguna comida
+                    (f + i)->centro.x = (rand() % ANCHOMAX + 0);
+                    (f + i)->centro.y = (rand() % LARGOMAX + 0);
+                    (f + i)->hitbox.abajizq.x = ((f + i)->centro.x - 10);
+                    (f + i)->hitbox.arribader.x = ((f + i)->centro.x + 10);
+                    (f + i)->hitbox.abajizq.y = ((f + i)->centro.y - 10);
+                    (f + i)->hitbox.arribader.y = ((f + i)->centro.y + 10);
+                    ++foodshown;
+                    break;
+                }
+            }
+        }
+    }
+    return foodshown;
+}

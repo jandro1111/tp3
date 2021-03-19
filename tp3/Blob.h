@@ -17,6 +17,8 @@ public:
 	void setpos(Point);//cambia la pos del blob
 	void moveblob(void);//mueve el blob
 	void blobdeath(double);//decide si vive o muere el blob
+	void kill(void);//mata un blob
+	void sethitbox(void);// cambio el hitbox, en funcion de la posicion y el tipo de blob
 protected:
 
 private:
@@ -29,6 +31,7 @@ private:
 	bool dead;
 	double vel;
 	int velmax;
+	Rect hitbox;
 	//tipo 1 es de 40x40 5 de comida para generar otro
 	//tipo 2 45x45 4 de comida para generar otro
 	//tipo 3 80x80 3 de comida para generar otro

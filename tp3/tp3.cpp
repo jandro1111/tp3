@@ -26,8 +26,8 @@ int main(int argc, char** argv)
         modo = atoi(argv[2]);
         velmax = atoi(argv[3]);//en pixeles x tick
         printf(" blobs iniciales:%d modo:%d vel max:%d \n", blobcantini, modo,velmax);
-        if (blobcantini <= 0) {//cant de robot no valido
-            printf("Cantidad de robots no valida\n");
+        if (blobcantini <= 0||blobcantini>MAXBLOB) {//cant de robot no valido
+            printf("Cantidad de blobs no valida\n");
             return (EXIT_FAILURE);
         }
         if (modo < 1 || modo>2) {//si es un modo no valido
@@ -39,28 +39,60 @@ int main(int argc, char** argv)
             return(EXIT_FAILURE);
         }
     }
-    /// modo 1 vmax es seteada por terminal
-    /// v porcentual, por gui, todos los blobs comparten la misma vel
+    /// modo 1 vmax es seteada por terminal ESTA
+    /// v porcentual, por gui, todos los blobs comparten la misma vel ESTA
     //modo 2
-    // cada blob tiene una vmax, es random entre un valor puesto por terminal
-    //v porcentual random, todos los blobs comparten la misma vel
+    // cada blob tiene una vmax, es random entre un valor puesto por terminal ESTA
+    //v porcentual random, todos los blobs comparten la misma vel ESTA
     //
+    // funciones de blobs
+    // blobbirth
+    // blobdeath ESTA
+    // blobfood
+    // blobmerge
+    // blob
     //GUIpara ambos modosI
     //randomjigglelimit(num entre 0 y 360)
-    //foodcount
-    // prob de muerte entre 0y1
+    //foodcount ESTA
+    // prob de muerte entre 0y1 ESTA
     //radio de deteccion de comida
     blobcant = blobcantini;
     double prob = 0.05;//sacar cuando este la gui
-    double velpor = 0.5;//
-    Blob blob1(1,modo,velpor,velmax);
+    double velpor = 0.5;//entre 0 y 1 empieza en 0.5
+    int foodcount = 10;// entre 0 y 100, empiza seteada en 10
+    int i;
+    //inicializo los blobs
+    Blob* blob = static_cast<Blob*>(::operator new[](MAXBLOB * sizeof(Blob)));
+    for (size_t i = 0; i < MAXBLOB; i++) {//creo el arreglo con todos los blobs que voy a poder usar
+        ::new (blob + i) Blob(1, modo, velpor, velmax);
+    }
+    for (i = blobcantini; i < MAXBLOB;++i) {//mato todos los que no estoy usando segun la cantidad de blobs iniciales
+        blob[i].kill();
+    }
+    //inicializo la comida
+    int foodshown = 0;
+    Food comida[MAXFOOD];
+    Food* f = comida;
+    for (i = 0; i < MAXFOOD; ++i) {
+        comida[i].shown = false;//empizo sin mostrar ninguna comida
+        //despues cuando spawneo la comida le inicializo el resto de los datos
+    }
+
+    //
     cout << "vel: " << (velmax * velpor) << " vel: %"<< (velpor*100)<< endl;
-    cout << "posicion x: " << blob1.getposx() << " posicion y: " << blob1.getposy() << " angulo: " << blob1.getangle() << endl;
     for (ticks = 0; ticks < 20; ++ticks) {
-        blob1.moveblob();
-        blob1.blobdeath(prob);
-    cout << "posicion x: " << blob1.getposx() << " posicion y: " << blob1.getposy() << " angulo: " << blob1.getangle() << " muerto: "<<blob1.getdead()<< endl;
-}
+        for (i = 0; i < MAXBLOB; ++i) {
+            if ((blob[i].getdead())==false){//si no esta muerto, hace todo lo de un blob vivo
+                blob[i].moveblob();//muevo el blob
+                blob[i].blobdeath(prob);//veo si se muere
+                blob[i].setvel(velpor);
+                cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
+            }
+        }
+        foodshown=foodspawn(foodcount,f,foodshown);//genera de a una comida x vez
+        cout << foodshown << endl;
+        cout << "\n" << endl;
+    }
     return(EXIT_SUCCESS);
 }
 

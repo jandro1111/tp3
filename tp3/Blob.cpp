@@ -3,10 +3,13 @@
 
 /// //////////////////////////////////////////
 Blob::Blob(int t,int modo,double velpor,int velmaxi) {
-    int basura;
     p.x = (rand() % ANCHOMAX + 0);
     p.y = (rand() % LARGOMAX + 0);
-    basura=setfood(0);//pongo el contador de comida en 0
+    hitbox.abajizq.x = (p.x - 20);
+    hitbox.arribader.x = (p.x + 20);
+    hitbox.abajizq.y = (p.y - 20);
+    hitbox.arribader.y = (p.y + 20);
+    food = 0;
     angle = ((rand() % 360 + 0) * 2 * PI / 360);//ahora lo paso a radianes pq math.h usa radianes
     tipo = t;
     dead = false;
@@ -96,6 +99,7 @@ void Blob::moveblob(void) {
         auxp.x -= ANCHOMAX;
     }
     setpos(auxp);
+    sethitbox();
 }
 //
 void Blob::blobdeath(double prob) {
@@ -113,3 +117,34 @@ void Blob::blobdeath(double prob) {
 void Blob::setvel(double velpor) {
     vel = velmax * velpor;
 }
+//
+void Blob::kill() {
+    dead = true;
+}
+//
+void Blob::sethitbox() {
+    switch (tipo)
+    {
+    case 1:
+        hitbox.abajizq.x = (p.x - 20);
+        hitbox.arribader.x = (p.x + 20);
+        hitbox.abajizq.y = (p.y - 20);
+        hitbox.arribader.y = (p.y + 20);
+        break;
+    case 2:
+        hitbox.abajizq.x = (p.x - 22.5);
+        hitbox.arribader.x = (p.x + 22.5);
+        hitbox.abajizq.y = (p.y - 22.5);
+        hitbox.arribader.y = (p.y + 22.5);
+        break;
+    case 3:
+        hitbox.abajizq.x = (p.x - 40);
+        hitbox.arribader.x = (p.x + 40);
+        hitbox.abajizq.y = (p.y - 40);
+        hitbox.arribader.y = (p.y + 40);
+        break;
+    default:
+        break;
+    }
+}
+//
