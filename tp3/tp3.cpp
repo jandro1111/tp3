@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     srand(time(NULL));//para randomizar
     pCallback p = parseCallback;
 
-    printf(" El primer dato es la cantidad inicial de blobs, y el segundo  el modo, y el trecero para velmax,mandar solo parametros \n");
+    printf(" El primer dato es la cantidad inicial de blobs, y el segundo el modo, y el tercero para velmax,mandar solo parametros \n");
     printf("El modo es 1 para ... , y 2 para....\n");
 
     if ((cant = parseCmdLine(argc, argv, p)) != 3) {//si pase una cantidad incorrecta de datos

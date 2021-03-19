@@ -5,14 +5,14 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string>
-#include<ctime>
+#include <ctime>
 #include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
-#include<iomanip>
-#include<random>
+#include <iomanip>
+#include <random>
 #include <iostream>
-#include<vector>
+#include <vector>
 // DEFINES //
 using namespace std;
 #define ANCHOMAX 900

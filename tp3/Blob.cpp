@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////
 #include "Blob.h"
 
-/// //////////////////////////////////////////
+////////////////////////////////////////////////
+
 Blob::Blob(int t,int modo,double velpor,int velmaxi) {
     p.x = (rand() % ANCHOMAX + 0);
     p.y = (rand() % LARGOMAX + 0);
@@ -10,7 +11,7 @@ Blob::Blob(int t,int modo,double velpor,int velmaxi) {
     hitbox.abajizq.y = (p.y - 20);
     hitbox.arribader.y = (p.y + 20);
     food = 0;
-    angle = ((rand() % 360 + 0) * 2 * PI / 360);//ahora lo paso a radianes pq math.h usa radianes
+    angle = ((rand() % 360 + 0) * 2.0 * PI / 360.0);//ahora lo paso a radianes pq math.h usa radianes
     tipo = t;
     dead = false;
     if (modo == 1) {//
