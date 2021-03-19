@@ -68,8 +68,8 @@ double getAngleBetweenPoitns(Point* p1, Point* p2) {//calcula el angulo entre do
 //////////////////////////////////////////////////////////////////////////
 Point translatePoint(Point* p, double distance, double angle) {//traslada un punto una distancia en cierto angulo
     Point pmov;//math.h usa radianes
-    pmov.x = ((p->x) + cos(angle));//(cos(angle)<0?-cos(angle): cos(angle))
-    pmov.y = ((p->y) + sin(angle));//(sin(angle)<0?-sin(angle): sin(angle))
+    pmov.x = ((p->x) + distance*cos(angle));//(cos(angle)<0?-cos(angle): cos(angle))
+    pmov.y = ((p->y) + distance*sin(angle));//(sin(angle)<0?-sin(angle): sin(angle))
     return pmov;
 }
 //////////////////////////////////////////////////////////////////////////
@@ -123,3 +123,4 @@ bool isPointInRect(Point* p, Rect* r) { //que determina si el punto p está dentr
     }
     return a;
 }
+//////////////////////////////////////////////////////////////////////////////////////
