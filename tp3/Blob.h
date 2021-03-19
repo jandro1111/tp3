@@ -19,6 +19,7 @@ public:
 	void blobdeath(double);//decide si vive o muere el blob
 	void kill(void);//mata un blob
 	void sethitbox(void);// cambio el hitbox, en funcion de la posicion y el tipo de blob
+	void blobfeed(int,int,Food*);//hace que el blob se mueva hacia la comida
 protected:
 
 private:

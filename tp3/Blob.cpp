@@ -148,3 +148,29 @@ void Blob::sethitbox() {
     }
 }
 //
+void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
+    bool comida = false;
+    int i,aux;
+    bool doonce = true;
+    double distaux=-1;
+    for (i = 0; i < foodshown; ++i) {
+        if (getDistanceBetweenPoints(&(f+i)->centro,&p)<smellradio) {//si hay comida en el smell radio
+            if (doonce == true) {
+                distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
+                aux = i;
+                doonce = false;
+            }
+            if (getDistanceBetweenPoints(&(f + i)->centro, &p) < distaux) {//si encontre una comida mas cercana
+                distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
+                aux = i;
+            }
+        }
+    }
+    if (distaux == -1) {//si no encontre nada cerca del blob
+
+    }
+    else {//si encontre comida cerca del blob
+        angle = getAngleBetweenPoitns(&(f + aux)->centro, &p);//cambio el angulo
+    }
+
+}

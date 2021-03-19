@@ -63,7 +63,7 @@ double getDistanceBetweenPoints(Point* p1, Point* p2) {//calcula distancia entre
 }
 //////////////////////////////////////////////////////////////////////////
 double getAngleBetweenPoitns(Point* p1, Point* p2) {//calcula el angulo entre dos puntos
-    return(atan(getDistanceBetweenPoints(p1, p2)));
+    return(acos((p1->x*p2->x+p1->y*p2->y)/(sqrt((p2->x + p1->x) * (p2->x + p1->x) + (p2->y + p1->y) * (p2->y + p1->y)))));
 }
 //////////////////////////////////////////////////////////////////////////
 Point translatePoint(Point* p, double distance, double angle) {//traslada un punto una distancia en cierto angulo

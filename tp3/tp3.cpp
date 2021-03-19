@@ -60,6 +60,7 @@ int main(int argc, char** argv)
     double prob = 0.05;//sacar cuando este la gui
     double velpor = 0.5;//entre 0 y 1 empieza en 0.5
     int foodcount = 10;// entre 0 y 100, empiza seteada en 10
+    int smellradio = 100;//el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     int i;
     //inicializo los blobs
     Blob* blob = static_cast<Blob*>(::operator new[](MAXBLOB * sizeof(Blob)));
@@ -79,6 +80,7 @@ int main(int argc, char** argv)
     }
 
     //
+
     cout << "vel: " << (velmax * velpor) << " vel: %"<< (velpor*100)<< endl;
     for (ticks = 0; ticks < 20; ++ticks) {
         for (i = 0; i < MAXBLOB; ++i) {
@@ -86,6 +88,7 @@ int main(int argc, char** argv)
                 blob[i].moveblob();//muevo el blob
                 blob[i].blobdeath(prob);//veo si se muere
                 blob[i].setvel(velpor);
+                blob[i].blobfeed(smellradio, foodshown, f);
                 cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
             }
         }
