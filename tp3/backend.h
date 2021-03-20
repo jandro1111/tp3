@@ -25,6 +25,10 @@ using namespace std;
 #define VACIO 0
 #define MAXBLOB 100
 #define MAXFOOD 100
+#define BLOB1_SIZE 40
+#define BLOB2_SIZE 45
+#define BLOB3_SIZE 80
+#define FOOD_SIZE 20
 //  STRUCT/CLASS  //
 typedef int(*pCallback) (char*, char*);
 typedef struct {

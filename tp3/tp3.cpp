@@ -4,13 +4,21 @@
 
 #include "backend.h"
 #include "Blob.h"
-#include "simulation.h"
+#include "allegro_draw.h"
 
 
 
 int main(int argc, char** argv)
 {
     simulation Simu;
+
+    drawingData drawing;
+
+    if (allegro_start(&drawing))
+    {
+        fprintf(stderr, "failed to initialize allegro!\n");
+        return -1;
+    }
 
     srand(time(NULL));//para randomizar
 
@@ -96,6 +104,7 @@ int main(int argc, char** argv)
                 //blob[i].blobfeed(smellradio, foodshown, f);
                 cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
             }
+            draw_all(&Simu, &drawing);
         }
         foodshown=foodspawn(foodcount,f,foodshown);//genera de a una comida x vez
         cout << foodshown << endl;
