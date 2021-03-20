@@ -1,4 +1,4 @@
-// INCLUDES //
+ï»¿// INCLUDES //
 #include"backend.h"
 // FUNCTIONS //
 int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*)) {//cant de opciones +params o -1 en error
@@ -62,8 +62,25 @@ double getDistanceBetweenPoints(Point* p1, Point* p2) {//calcula distancia entre
     return (sqrt((p2->x - p1->x) * (p2->x - p1->x) + (p2->y - p1->y) * (p2->y - p1->y)));
 }
 //////////////////////////////////////////////////////////////////////////
-double getAngleBetweenPoitns(Point* p1, Point* p2) {//calcula el angulo entre dos puntos
-    return(acos((p1->x*p2->x+p1->y*p2->y)/(sqrt((p2->x + p1->x) * (p2->x + p1->x) + (p2->y + p1->y) * (p2->y + p1->y)))));
+double getAngleBetweenPoints(Point* C, Point* B,double angulo) {//calcula el angulo entre dos puntos
+//   return(acos((p1->x*p2->x+p1->y*p2->y)/(sqrt((p2->x + p1->x) * (p2->x + p1->x) + (p2->y + p1->y) * (p2->y + p1->y)))));
+
+    double Ay = C->y + 10 * sin(angulo);
+    double Ax = C->x + 10 * cos(angulo);
+
+    // The atan2 functions return arctan y/x in the interval [âˆ’pi , +pi] radians
+    double Dir_C_to_A = atan2(Ay - C->y, Ax - C->x);
+    double Dir_C_to_B = atan2(B->y - C->y, B->x - C->x);
+    double Angle_ACB = Dir_C_to_A - Dir_C_to_B;
+
+    // Handle wrap around
+    /*if (Angle_ACB > PI) Angle_ACB -= 2*PI;
+    else if (Angle_ACB < -PI) Angle_ACB += 2*PI;*/
+    if (Angle_ACB < 0) {
+        Angle_ACB = -Angle_ACB;
+    }
+    // Answer is in the range of [-pi...pi]
+    return Angle_ACB;
 }
 //////////////////////////////////////////////////////////////////////////
 Point translatePoint(Point* p, double distance, double angle) {//traslada un punto una distancia en cierto angulo
@@ -85,7 +102,7 @@ bool isPointEqual(Point* p1, Point* p2) {//determina si dos puntos son iguales
     return p;
 }
 //////////////////////////////////////////////////////////////////////////
-double getRectArea(Rect* r) { // calcula el área del rectángulo.
+double getRectArea(Rect* r) { // calcula el Ã¡rea del rectÃ¡ngulo.
     double area;
     double base, altura;
     base = (r->abajizq.x + r->arribader.x);
@@ -95,7 +112,7 @@ double getRectArea(Rect* r) { // calcula el área del rectángulo.
 
 }
 /////////////////////////////////////////////////////////////////////////
-bool isPointInRect(Point* p, Rect* r) { //que determina si el punto p está dentro de o en el borde del rectángulo r.
+bool isPointInRect(Point* p, Rect* r) { //que determina si el punto p estÃ¡ dentro de o en el borde del rectÃ¡ngulo r.
     bool a;
     if ((p->x) < (r->abajizq.x)) {//si esta mas izq que el punto mas izq esta fuera del rectangulo
         a = false;
@@ -138,6 +155,7 @@ int foodspawn(int foodmax, Food* f,int foodshown) {
                     (f + i)->hitbox.abajizq.y = ((f + i)->centro.y - 10);
                     (f + i)->hitbox.arribader.y = ((f + i)->centro.y + 10);
                     ++foodshown;
+                    cout << "x"<<(f + i)->centro.x<<"y: " << (f + i)->centro.x << endl;
                     break;
                 }
             }

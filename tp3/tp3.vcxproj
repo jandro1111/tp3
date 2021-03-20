@@ -141,11 +141,13 @@
   <ItemGroup>
     <ClCompile Include="backend.cpp" />
     <ClCompile Include="Blob.cpp" />
+    <ClCompile Include="simulation.cpp" />
     <ClCompile Include="tp3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backend.h" />
     <ClInclude Include="Blob.h" />
+    <ClInclude Include="simulation.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="babyblob.png" />
