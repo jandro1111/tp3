@@ -21,6 +21,8 @@ int main(int argc, char** argv)
 
     srand(time(NULL));//para randomizar
 
+    //AL FINAL SE USA SOLO ALLEGRO, SIN GUI
+
     /*
 
     int cant, blobcant, ticks, b, blobcantini, modo,velmax;

@@ -24,7 +24,7 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
-	draw->display = al_create_display(SCREEN_H, SCREEN_W);
+	draw->display = al_create_display(ANCHOMAX, LARGOMAX);
 
 	if (!draw->display)
 	{
@@ -35,32 +35,31 @@ int allegro_start(drawingData* draw)
 
 	if (!al_init_image_addon()) {
 		fprintf(stderr, "Unable to start image addon \n");
-		al_uninstall_system();
 		return -1;
 	}
 
 	if (!(draw->blob1 = al_load_bitmap("babyblob.png"))) {
-		fprintf(stderr, "Unable to load png\n");
+		fprintf(stderr, "Unable to load png1\n");
 		return -1;
 	}
 
 	if (!(draw->blob2 = al_load_bitmap("grownblob.png"))) {
-		fprintf(stderr, "Unable to load png\n");
+		fprintf(stderr, "Unable to load png2\n");
 		return -1;
 	}
 
 	if (!(draw->blob3 = al_load_bitmap("goodoldblob.png"))) {
-		fprintf(stderr, "Unable to load png\n");
+		fprintf(stderr, "Unable to load png3\n");
 		return -1;
 	}
 
-	if (!(draw->background = al_load_bitmap("background.png"))) {
-		fprintf(stderr, "Unable to load png\n");
+	if (!(draw->background = al_load_bitmap("background.jpg"))) {
+		fprintf(stderr, "Unable to load png4\n");
 		return -1;
 	}
 
 	if (!(draw->food = al_load_bitmap("food.png"))) {
-		fprintf(stderr, "Unable to load png\n");
+		fprintf(stderr, "Unable to load png5\n");
 		return -1;
 	}
 
@@ -68,7 +67,7 @@ int allegro_start(drawingData* draw)
 	al_set_display_icon(draw->display, draw->blob1);
 
 
-	al_init_font_addon(); // initialize the font addon
+	/*al_init_font_addon(); // initialize the font addon
 	al_init_ttf_addon(); // initialize the ttf (True Type Font) addon
 	draw->font1 = al_load_ttf_font("Sans.ttf", DISP_SCALE * 7, 0);
 	if (!draw->font1) {
@@ -79,7 +78,7 @@ int allegro_start(drawingData* draw)
 	if (!draw->font2) {
 		fprintf(stderr, "Could not load 'Sans.ttf'.\n");
 		return -1;
-	}
+	}*/
 
 	al_set_target_backbuffer(draw->display);
 
@@ -97,7 +96,7 @@ void draw_all(simulation* sim, drawingData* draw)
 	int n;
 
 	//Dibujo de blobs
-	for (n = 0; n <= MAXBLOB; n++)
+	for (n = 0; n < MAXBLOB; n++)
 	{
 		if (sim->blob[n].dead == true)
 		{
@@ -119,11 +118,11 @@ void draw_all(simulation* sim, drawingData* draw)
 	}
 
 	//Dibujo de la comida
-	for (n = 0; n <= MAXFOOD; n++)
+	/*for (n = 0; n < MAXFOOD; n++)
 	{
 		if (sim->comida[n].shown == true)
 			al_draw_bitmap(draw->food, (sim->comida[n].hitbox.arribader.x) - (FOOD_SIZE), (sim->comida[n].hitbox.arribader.y) , 0);
-	}
+	}*/
 
 	al_flip_display();
 }

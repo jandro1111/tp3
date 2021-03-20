@@ -9,10 +9,10 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-#include <stdio.h>
+/*#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <math.h>*/
 
 #include "simulation.h"
 
@@ -35,26 +35,6 @@ public:
 	ALLEGRO_FONT* font2;
 };
 
-typedef struct {
-	long base;
-	long altura;
-	long robots;
-	int modo;
-}MyData_t;
-
-#define BUFFER_SIZE 230.0
-#define DISP_SCALE 4
-#define SCREEN_W (BUFFER_SIZE * DISP_SCALE)
-#define SCREEN_H (BUFFER_SIZE * DISP_SCALE)
-
-
-#define ROBOT_RADIO 250
-#define DOT_RADIO 100
-#define SEPARACIONES_Y 21
-#define SEPARACIONES_X 10
-#define VELOCIDAD 300.0
-#define REST (1/VELOCIDAD)
-#define TIEMPO_DE_GRAFICO 600.0
 
 
 //Inicia todo lo referente a allegro

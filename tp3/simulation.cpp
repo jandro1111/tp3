@@ -38,7 +38,7 @@ void simulation::runSim(void) {
             blob[i].foodCrash(f, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
             if (crashCheck != -1) {
 
-//              blob[i].setfood();  //Aca creo que se usaria esto pero lo dudo
+  //            blob[i].setfood();  //Aca creo que se usaria esto pero lo dudo
                 crashCheck = -1;
             }
             

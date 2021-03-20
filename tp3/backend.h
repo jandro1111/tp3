@@ -19,7 +19,7 @@ using namespace std;
 #define LARGOMAX 420
 #define NOPARAM 0
 #define OK 1
-#define ERROR -1
+#define ERROR1 -1
 #define DISTANCE 1.0
 #define PI 3.141592
 #define VACIO 0

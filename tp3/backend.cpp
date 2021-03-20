@@ -8,7 +8,7 @@ int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*)) {//cant
         if (argv[i][0] == '-') {//si hay opcion
             if (i != (argc - 1)) {//si no es el ultimo elemento que recibe
                 if (argv[i][1] == NULL) {//si es una clave sin valor
-                    return ERROR;
+                    return ERROR1;
                 }
                 else {
                     if (pCallback(argv[i], argv[i + 1]) == 1) {//si esta todo bien..
@@ -16,12 +16,12 @@ int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*)) {//cant
                         ++i;//salteo el valor de la clave
                     }
                     else {//parsecallback tiro error
-                        return ERROR;
+                        return ERROR1;
                     }
                 }
             }
             else {
-                return ERROR;
+                return ERROR1;
             }
         }
         else {//encontre un parametro
@@ -29,7 +29,7 @@ int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*)) {//cant
                 ++datos;
             }
             else {//parsecallback tiro error
-                return ERROR;
+                return ERROR1;
             }
         }
     }
