@@ -81,7 +81,6 @@ void Blob::setpos(Point aux) {
 /// 
 void Blob::moveblob(void) {
     Point auxp;
-    double auxa;            //de que sirve esta?
     auxp.x = getposx();
     auxp.y = getposy();
     auxp = translatePoint(&auxp, vel , getangle() );
@@ -126,26 +125,26 @@ void Blob::kill() {
     dead = true;
 }
 //
-void Blob::sethitbox(Point p) {
+void Blob::sethitbox(Point Auxp) {     
     switch (tipo)
     {
     case 1:
-        hitbox.abajizq.x = (p.x - 20);
-        hitbox.arribader.x = (p.x + 20);
-        hitbox.abajizq.y = (p.y - 20);
-        hitbox.arribader.y = (p.y + 20);
+        hitbox.abajizq.x = (Auxp.x - 20);
+        hitbox.arribader.x = (Auxp.x + 20);
+        hitbox.abajizq.y = (Auxp.y - 20);
+        hitbox.arribader.y = (Auxp.y + 20);
         break;
     case 2:
-        hitbox.abajizq.x = (p.x - 22.5);
-        hitbox.arribader.x = (p.x + 22.5);
-        hitbox.abajizq.y = (p.y - 22.5);
-        hitbox.arribader.y = (p.y + 22.5);
+        hitbox.abajizq.x = (Auxp.x - 22.5);
+        hitbox.arribader.x = (Auxp.x + 22.5);
+        hitbox.abajizq.y = (Auxp.y - 22.5);
+        hitbox.arribader.y = (Auxp.y + 22.5);
         break;
     case 3:
-        hitbox.abajizq.x = (p.x - 40);
-        hitbox.arribader.x = (p.x + 40);
-        hitbox.abajizq.y = (p.y - 40);
-        hitbox.arribader.y = (p.y + 40);
+        hitbox.abajizq.x = (Auxp.x - 40);
+        hitbox.arribader.x = (Auxp.x + 40);
+        hitbox.abajizq.y = (Auxp.y - 40);
+        hitbox.arribader.y = (Auxp.y + 40);
         break;
     default:
         break;

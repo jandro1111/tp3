@@ -30,9 +30,7 @@ public:
 	Point p;
 	double angle;
 	int food;
-	int death;											//Para que sirve este?
 	int tipo;			//1 es chico 2 es medio y 3 es grande
-	int velocidad;										//Para que sirve este?
 	bool dead;
 	double vel;
 	int velmax;

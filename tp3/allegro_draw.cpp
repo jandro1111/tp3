@@ -98,7 +98,7 @@ void draw_all(simulation* sim, drawingData* draw)
 	//Dibujo de blobs
 	for (n = 0; n < MAXBLOB; n++)
 	{
-		if (sim->blob[n].dead == true)
+		if ( !(sim->blob[n].dead))
 		{
 			angulo[n] = -(sim->blob[n].angle);
 
