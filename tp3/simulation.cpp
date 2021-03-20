@@ -15,17 +15,18 @@ void simulation::initSim(void){
     }
     //inicializo la comida
 
-    int foodshown = 0;
-    Food comida[MAXFOOD];
+    foodShown = 0;
+    Food comid[MAXFOOD];
+    
     for (int i = 0; i < MAXFOOD; ++i) {
-        comida[i].shown = false;//empizo sin mostrar ninguna comida
+        comid[i].shown = false;//empizo sin mostrar ninguna comida
         //despues cuando spawneo la comida le inicializo el resto de los datos
     }
+    comida = comid;
 }
 
 void simulation::runSim(void) {
 
-    Food* f = comida;
     int crashCheck = -1;
 
     for (int i = 0; i < MAXBLOB; ++i) {
@@ -33,9 +34,9 @@ void simulation::runSim(void) {
             blob[i].moveblob();                 //muevo el blob
             blob[i].blobdeath(deathChance);     //veo si se muere
             blob[i].setvel(velPorc);
-            blob[i].blobfeed(smellRadius, foodShown, f);
+            blob[i].blobfeed(smellRadius, foodShown, comida);
 
-            blob[i].foodCrash(f, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
+            //blob[i].foodCrash(f, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
             if (crashCheck != -1) {
 
   //            blob[i].setfood();  //Aca creo que se usaria esto pero lo dudo
@@ -52,7 +53,7 @@ void simulation::runSim(void) {
             cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
         }
     }
-    foodShown = foodspawn(foodCount, f, foodShown);//genera de a una comida x vez
+    foodShown = foodspawn(foodCount, comida, foodShown);//genera de a una comida x vez
     cout << foodShown << endl;
     cout << "\n" << endl;
 }
