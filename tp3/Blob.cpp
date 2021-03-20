@@ -171,7 +171,7 @@ void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
 
     }
     else {//si encontre comida cerca del blob
-        angle = getAngleBetweenPoints(&p, &(f + aux)->centro,angle);//cambio el angulo
+        angle = getAngleBetweenPoints(&p, &(f + aux)->centro, angle);//cambio el angulo
     }
 
 }   
