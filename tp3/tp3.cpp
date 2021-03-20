@@ -7,12 +7,11 @@
 #include "simulation.h"
 
 
-
 int main(int argc, char** argv)
 {
     simulation Simu;
 
-    srand(time(NULL));//para randomizar
+    srand(time(NULL));      //para randomizar
 
     int cant, blobcant, ticks, b, blobcantini, modo,velmax;
     pCallback p = parseCallback;

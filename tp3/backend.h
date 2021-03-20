@@ -25,6 +25,9 @@ using namespace std;
 #define VACIO 0
 #define MAXBLOB 100
 #define MAXFOOD 100
+
+#define MOD(x) ( ( (x)>=0 ) ? (x) : (-(x)) )
+
 //  STRUCT/CLASS  //
 typedef int(*pCallback) (char*, char*);
 typedef struct {
