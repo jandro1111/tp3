@@ -2,15 +2,19 @@
 //
 
 
-#include"backend.h"
-#include"Blob.h"
+#include "backend.h"
+#include "Blob.h"
+#include "simulation.h"
 
 
 
 int main(int argc, char** argv)
 {
-    int cant, blobcant, ticks, b, blobcantini, modo,velmax;
+    simulation Simu;
+
     srand(time(NULL));//para randomizar
+
+    int cant, blobcant, ticks, b, blobcantini, modo,velmax;
     pCallback p = parseCallback;
 
     printf(" El primer dato es la cantidad inicial de blobs, y el segundo el modo, y el tercero para velmax,mandar solo parametros \n");
@@ -62,6 +66,7 @@ int main(int argc, char** argv)
     int foodcount = 10;// entre 0 y 100, empiza seteada en 10
     int smellradio = 100;//el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     int i;
+
     //inicializo los blobs
     Blob* blob = static_cast<Blob*>(::operator new[](MAXBLOB * sizeof(Blob)));
     for (size_t i = 0; i < MAXBLOB; i++) {//creo el arreglo con todos los blobs que voy a poder usar

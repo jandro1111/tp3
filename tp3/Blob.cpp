@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////////
 
-Blob::Blob(int t,int modo,double velpor,int velmaxi) {
+Blob::Blob(int type,int modo,double velpor,int velmaxi) {
     p.x = (rand() % ANCHOMAX + 0);
     p.y = (rand() % LARGOMAX + 0);
     hitbox.abajizq.x = (p.x - 20);
@@ -12,7 +12,7 @@ Blob::Blob(int t,int modo,double velpor,int velmaxi) {
     hitbox.arribader.y = (p.y + 20);
     food = 0;
     angle = ((rand() % 360 + 0) * 2.0 * PI / 360.0);//ahora lo paso a radianes pq math.h usa radianes
-    tipo = t;
+    tipo = type;
     dead = false;
     if (modo == 1) {//
         vel = (velpor * velmaxi);
@@ -81,10 +81,12 @@ void Blob::setpos(Point aux) {
 /// 
 void Blob::moveblob(void) {
     Point auxp;
-    double auxa;
+    double auxa;            //de que sirve esta?
     auxp.x = getposx();
     auxp.y = getposy();
-    auxp=translatePoint(&auxp, vel,getangle());
+    auxp = translatePoint(&auxp, vel , getangle() );
+
+    //Me encargo de acomodar las posiciones para el caso de que se hayan ido de la pantalla
     if (auxp.x < 0) {//si no puedo ir mas a la izq salgo por la der
         auxp.x = -auxp.x;
         auxp.x += (ANCHOMAX - 1);
@@ -155,7 +157,7 @@ void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
     bool doonce = true;
     double distaux=-1;
     for (i = 0; i < foodshown; ++i) {
-        if (getDistanceBetweenPoints(&(f+i)->centro,&p)<smellradio) {//si hay comida en el smell radio
+        if (getDistanceBetweenPoints(&(f+i)->centro,&p) < smellradio) {//si hay comida en el smell radio
             if (doonce == true) {
                 distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
                 aux = i;
@@ -171,7 +173,6 @@ void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
 
     }
     else {//si encontre comida cerca del blob
-        angle = getAngleBetweenPoitns(&(f + aux)->centro, &p);//cambio el angulo
+        angle = getAngleBetweenPoitns(&(f + aux)->centro, &p);  //cambio el angulo
     }
-
 }
