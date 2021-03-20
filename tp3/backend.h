@@ -47,7 +47,7 @@ int parseCallback(char* key, char* value);//analiza parametros/opciones
 double getRectArea(Rect* r); // calcula el área del rectángulo.
 bool isPointInRect(Point* p, Rect* r); //que determina si el punto p está dentro de o en el borde del rectángulo r.
 double getDistanceBetweenPoints(Point*, Point*);//calculo la distancia entre 2 puntos
-double getAngleBetweenPoitns(Point*, Point*);//calculo el angulo entre dos puntos
+double getAngleBetweenPoints(Point*, Point*,double);//calculo el angulo entre dos puntos
 Point translatePoint(Point* p, double distance, double angle);//traslada un punto una distancia en cierto angulo
 bool isPointEqual(Point* p1, Point* p2);//determina si dos puntos son iguales
 int foodspawn(int,Food*,int);//decide si se genera uno de comida

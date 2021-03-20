@@ -93,7 +93,7 @@ int main(int argc, char** argv)
                 blob[i].moveblob();//muevo el blob
                 blob[i].blobdeath(prob);//veo si se muere
                 blob[i].setvel(velpor);
-                blob[i].blobfeed(smellradio, foodshown, f);
+                //blob[i].blobfeed(smellradio, foodshown, f);
                 cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
             }
         }
