@@ -1,17 +1,27 @@
 // tp3.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-
 #include "backend.h"
 #include "Blob.h"
-#include "simulation.h"
+#include "allegro_draw.h"
 
+#include <Windows.h>
 
 int main(int argc, char** argv)
 {
     simulation Simu;
 
-    srand(time(NULL));      //para randomizar
+    drawingData drawing;
+
+    if (allegro_start(&drawing))
+    {
+        fprintf(stderr, "failed to initialize allegro!\n");
+        return -1;
+    }
+
+    srand(time(NULL));//para randomizar
+
+    /*
 
     int cant, blobcant, ticks, b, blobcantini, modo,velmax;
     pCallback p = parseCallback;
@@ -42,6 +52,9 @@ int main(int argc, char** argv)
             return(EXIT_FAILURE);
         }
     }
+
+    */
+
     /// modo 1 vmax es seteada por terminal ESTA
     /// v porcentual, por gui, todos los blobs comparten la misma vel ESTA
     //modo 2
@@ -59,8 +72,19 @@ int main(int argc, char** argv)
     //foodcount ESTA
     // prob de muerte entre 0y1 ESTA
     //radio de deteccion de comida
+
+
+    Simu.deathChance = 0.05;    //sacar TODO LO SIGUIENTE cuando este la gui
+    Simu.velPorc = 0.5;         //entre 0 y 1 empieza en 0.5
+    Simu.foodCount = 10;        // entre 0 y 100, empiza seteada en 10
+    Simu.smellRadius = 100;     //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
+    Simu.modo = 1;
+    Simu.blobsCantIni = 5;
+    Simu.velMax = 10;
+
+    /*
     blobcant = blobcantini;
-    double prob = 0.05;//sacar cuando este la gui
+    //double prob = 0.05;//sacar cuando este la gui
     double velpor = 0.5;//entre 0 y 1 empieza en 0.5
     int foodcount = 10;// entre 0 y 100, empiza seteada en 10
     int smellradio = 100;//el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
@@ -83,8 +107,6 @@ int main(int argc, char** argv)
         //despues cuando spawneo la comida le inicializo el resto de los datos
     }
 
-    //
-
     cout << "vel: " << (velmax * velpor) << " vel: %"<< (velpor*100)<< endl;
     for (ticks = 0; ticks < 20; ++ticks) {
         for (i = 0; i < MAXBLOB; ++i) {
@@ -95,12 +117,31 @@ int main(int argc, char** argv)
                 //blob[i].blobfeed(smellradio, foodshown, f);
                 cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
             }
+            draw_all(&Simu, &drawing);
         }
         foodshown=foodspawn(foodcount,f,foodshown);//genera de a una comida x vez
         cout << foodshown << endl;
         cout << "\n" << endl;
     }
+
+    */
+
+    Simu.initSim();
+
+    while (1) {
+
+        Simu.runSim();
+
+        draw_all(&Simu, &drawing);
+
+        Sleep(500); //Paro medio segundo el programa para poder ver los cambios
+    }
+
     return(EXIT_SUCCESS);
+
+    
+
+
 }
 
 

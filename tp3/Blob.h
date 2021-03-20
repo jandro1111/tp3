@@ -18,11 +18,15 @@ public:
 	void moveblob(void);//mueve el blob
 	void blobdeath(double);//decide si vive o muere el blob
 	void kill(void);//mata un blob
-	void sethitbox(void);// cambio el hitbox, en funcion de la posicion y el tipo de blob
+	void sethitbox(Point p);// cambio el hitbox, en funcion de la posicion y el tipo de blob
 	void blobfeed(int,int,Food*);//hace que el blob se mueva hacia la comida
-protected:
+	int blobCrash(Blob * blob, int blobIndex);
+	int foodCrash(Food* f, int foodShown);
+	void blobMerge(Blob* blobsArray, int blobIndex);
 
-private:
+//protected:
+
+//private:
 	Point p;
 	double angle;
 	int food;

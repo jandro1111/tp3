@@ -62,7 +62,7 @@ double getDistanceBetweenPoints(Point* p1, Point* p2) {//calcula distancia entre
     return (sqrt((p2->x - p1->x) * (p2->x - p1->x) + (p2->y - p1->y) * (p2->y - p1->y)));
 }
 //////////////////////////////////////////////////////////////////////////
-double getAngleBetweenPoints(Point* C, Point* B,double angulo) {//calcula el angulo entre dos puntos
+double getAngleBetweenPoints(Point* C, Point* B) {//calcula el angulo entre dos puntos
 
 //   return(acos((p1->x*p2->x+p1->y*p2->y)/(sqrt((p2->x + p1->x) * (p2->x + p1->x) + (p2->y + p1->y) * (p2->y + p1->y)))));
 //
@@ -83,7 +83,7 @@ double getAngleBetweenPoints(Point* C, Point* B,double angulo) {//calcula el ang
 //    // Answer is in the range of [-pi...pi]
 //    return Angle_ACB;
 
-    angulo = (atan2(MOD(B->y - C->y), MOD(B->x - C->x)));
+    double angulo = (atan2(MOD(B->y - C->y), MOD(B->x - C->x)));
 
     if (B->y <= C->y && B->x >= C->x ) {            //1er cuadrante
 
@@ -101,6 +101,8 @@ double getAngleBetweenPoints(Point* C, Point* B,double angulo) {//calcula el ang
 
         angulo = angulo + 3 * PI / 2;
     }
+
+    return angulo;
 }
 //////////////////////////////////////////////////////////////////////////
 Point translatePoint(Point* p, double distance, double angle) {//traslada un punto una distancia en cierto angulo

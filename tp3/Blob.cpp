@@ -87,6 +87,7 @@ void Blob::moveblob(void) {
     auxp = translatePoint(&auxp, vel , getangle() );
 
     //Me encargo de acomodar las posiciones para el caso de que se hayan ido de la pantalla
+
     if (auxp.x < 0) {//si no puedo ir mas a la izq salgo por la der
         auxp.x = -auxp.x;
         auxp.x += (ANCHOMAX - 1);
@@ -102,7 +103,7 @@ void Blob::moveblob(void) {
         auxp.x -= ANCHOMAX;
     }
     setpos(auxp);
-    sethitbox();
+    sethitbox(auxp);    //Agregue esto para que me setee la hitbox nueva
 }
 //
 void Blob::blobdeath(double prob) {
@@ -125,7 +126,7 @@ void Blob::kill() {
     dead = true;
 }
 //
-void Blob::sethitbox() {
+void Blob::sethitbox(Point p) {
     switch (tipo)
     {
     case 1:
@@ -175,5 +176,69 @@ void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
     else {//si encontre comida cerca del blob
         angle = getAngleBetweenPoints(&(f + aux)->centro, &p);  //cambio el angulo
     }
+}
 
+int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
+
+    int collision = 0;
+    int i;
+
+    for (i = 0; (i < MAXBLOB) && (collision != 1); i++) { //Checkeo colisiones con otros blobs
+        if (i != blobIndex) {
+            if (
+                ((hitbox.arribader.x + (float)(hitbox.abajizq.x - hitbox.arribader.x)) > (blobsArray[i]).hitbox.arribader.x ) &&
+                (hitbox.arribader.x < ((blobsArray[i]).hitbox.arribader.x + (float)((blobsArray[i]).hitbox.abajizq.x - (blobsArray[i]).hitbox.arribader.x)  )) &&
+                ((hitbox.abajizq.y + (float)(hitbox.arribader.y - hitbox.abajizq.y) ) > (blobsArray[i]).hitbox.arribader.y ) &&
+                (hitbox.abajizq.y < ((blobsArray[i]).hitbox.arribader.y + (float)(hitbox.arribader.y - hitbox.abajizq.y) )))
+            {
+                if ( (tipo == (blobsArray[i]).tipo) && (tipo != 3) ) { //La colision solo se realizara si los blobs son del mismo tipo, y si son distintos del tipo 3
+                        
+                    collision = 1;
+                }
+            }
+        }
+    }
+    if (collision == 1) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
+
+        return i;
+    }
+    else {                  //En el caso contrario devuelvo -1
+
+        return -1;
+    }
+}
+int Blob::foodCrash(Food* f, int foodShown) {
+
+    int collision = 0;
+    int i;
+
+    for (i = 0; (i < food) && (collision != 1); i++) { //Checkeo colisiones con otros blobs
+        if (
+            ((hitbox.arribader.x + (float)(hitbox.abajizq.x - hitbox.arribader.x)) > (f[i]).hitbox.arribader.x) &&
+            (hitbox.arribader.x < ((f[i]).hitbox.arribader.x + (float)((f[i]).hitbox.abajizq.x - (f[i]).hitbox.arribader.x))) &&
+            ((hitbox.abajizq.y + (float)(hitbox.arribader.y - hitbox.abajizq.y)) > (f[i]).hitbox.arribader.y) &&
+            (hitbox.abajizq.y < ((f[i]).hitbox.arribader.y + (float)(hitbox.arribader.y - hitbox.abajizq.y))))
+        {
+                
+            collision = 1;
+        }
+    }
+    if (collision == 1) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
+
+        return i;
+    }
+    else {                  //En el caso contrario devuelvo -1
+
+        return -1;
+    }
+}
+void Blob::blobMerge(Blob* blobsArray, int blobIndex) {
+
+    (blobsArray[blobIndex]).dead = 1;   //A este lo mato, y al otro lo convierto en el tipo mas grande
+                                         
+    tipo++;
+    sethitbox(p);
+    vel = ((blobsArray[blobIndex]).vel + vel) / 2; 
+
+    //Tambien tendriamos que asignarle la nueva direccion
 }

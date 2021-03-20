@@ -26,14 +26,29 @@ void simulation::initSim(void){
 void simulation::runSim(void) {
 
     Food* f = comida;
+    int crashCheck = -1;
 
     for (int i = 0; i < MAXBLOB; ++i) {
         if ((blob[i].getdead()) == false) {     //si no esta muerto, hace todo lo de un blob vivo
-
             blob[i].moveblob();                 //muevo el blob
             blob[i].blobdeath(deathChance);     //veo si se muere
             blob[i].setvel(velPorc);
             blob[i].blobfeed(smellRadius, foodShown, f);
+
+            blob[i].foodCrash(f, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
+            if (crashCheck != -1) {
+
+//              blob[i].setfood();  //Aca creo que se usaria esto pero lo dudo
+                crashCheck = -1;
+            }
+            
+            crashCheck = blob[i].blobCrash(blob, i);
+            if (crashCheck != -1) {
+
+                blob[i].blobMerge(blob, crashCheck);
+                crashCheck = -1;
+            }
+
             cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
         }
     }
