@@ -35,9 +35,9 @@ void simulation::runSim(void) {
             blob[i].moveblob();                 //muevo el blob
             blob[i].blobdeath(deathChance);     //veo si se muere
             blob[i].setvel(velPorc);
-            blob[i].blobfeed(smellRadius, foodShown, comida);
+            blob[i].blobfeed(smellRadius, comida);
 
-            blob[i].foodCrash(comida, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
+            crashCheck = blob[i].foodCrash(comida, foodShown);   
             if (crashCheck != -1) {
 
                 blob[i].blobEats(comida, crashCheck);

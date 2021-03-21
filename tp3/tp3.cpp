@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     Simu.foodCount = 10;        // entre 0 y 100, empiza seteada en 10
     Simu.smellRadius = 100;     //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     Simu.modo = 1;
-    Simu.blobsCantIni = 1;
+    Simu.blobsCantIni = 2;
     Simu.velMax = 10;
 
     Simu.initSim();

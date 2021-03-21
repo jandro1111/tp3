@@ -151,21 +151,23 @@ void Blob::sethitbox(Point Auxp) {
     }
 }
 //
-void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
+void Blob::blobfeed(int smellradio,Food*f) {
     bool comida = false;
     int i,aux;
     bool doonce = true;
     double distaux=-1;
-    for (i = 0; i < foodshown; ++i) {
-        if (getDistanceBetweenPoints(&(f+i)->centro,&p) < smellradio) {//si hay comida en el smell radio
-            if (doonce == true) {
-                distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
-                aux = i;
-                doonce = false;
-            }
-            if (getDistanceBetweenPoints(&(f + i)->centro, &p) < distaux) {//si encontre una comida mas cercana
-                distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
-                aux = i;
+    for (i = 0; i < MAXFOOD; ++i) {
+        if ((f + i)->shown == true) {
+            if (getDistanceBetweenPoints(&(f + i)->centro, &p) < smellradio) {//si hay comida en el smell radio
+                if (doonce == true) {
+                    distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
+                    aux = i;
+                    doonce = false;
+                }
+                if (getDistanceBetweenPoints(&(f + i)->centro, &p) < distaux) {//si encontre una comida mas cercana
+                    distaux = getDistanceBetweenPoints(&(f + i)->centro, &p);
+                    aux = i;
+                }
             }
         }
     }
@@ -179,25 +181,25 @@ void Blob::blobfeed(int smellradio,int foodshown,Food*f) {
 
 int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
 
-    int collision = 0;
+    bool collision = false;
     int i;
 
-    for (i = 0; (i < MAXBLOB) && (collision != 1); i++) { //Checkeo colisiones con otros blobs
+    for (i = 0; (i < MAXBLOB) && (collision == false); i++) { //Checkeo colisiones con otros blobs
         if (i != blobIndex) {
             if (
-                ((hitbox.arribader.x + (float)(hitbox.abajizq.x - hitbox.arribader.x)) > (blobsArray[i]).hitbox.arribader.x ) &&
-                (hitbox.arribader.x < ((blobsArray[i]).hitbox.arribader.x + (float)((blobsArray[i]).hitbox.abajizq.x - (blobsArray[i]).hitbox.arribader.x)  )) &&
-                ((hitbox.abajizq.y + (float)(hitbox.arribader.y - hitbox.abajizq.y) ) > (blobsArray[i]).hitbox.arribader.y ) &&
-                (hitbox.abajizq.y < ((blobsArray[i]).hitbox.arribader.y + (float)(hitbox.arribader.y - hitbox.abajizq.y) )))
+                (hitbox.arribader.x > (blobsArray[i]).hitbox.abajizq.x) &&
+                (hitbox.abajizq.x < (blobsArray[i]).hitbox.arribader.x) &&
+                (hitbox.abajizq.y < (blobsArray[i]).hitbox.arribader.y) &&
+                (hitbox.arribader.y > (blobsArray[i]).hitbox.abajizq.y))
             {
                 if ( (tipo == (blobsArray[i]).tipo) && (tipo != 3) ) { //La colision solo se realizara si los blobs son del mismo tipo, y si son distintos del tipo 3
                         
-                    collision = 1;
+                    collision = true;
                 }
             }
         }
     }
-    if (collision == 1) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
+    if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
 
         return i;
     }
@@ -212,18 +214,21 @@ int Blob::foodCrash(Food* f, int foodShown) {
     int i;
 
     for (i = 0; (i < MAXFOOD) && (collision == false); i++) { //Checkeo colisiones con otros blobs
-        if (
-            ((hitbox.arribader.x + (float)(hitbox.abajizq.x - hitbox.arribader.x)) > (f[i]).hitbox.arribader.x) &&
-            (hitbox.arribader.x < ((f[i]).hitbox.arribader.x + (float)((f[i]).hitbox.abajizq.x - (f[i]).hitbox.arribader.x))) &&
-            ((hitbox.abajizq.y + (float)(hitbox.arribader.y - hitbox.abajizq.y)) > (f[i]).hitbox.arribader.y) &&
-            (hitbox.abajizq.y < ((f[i]).hitbox.arribader.y + (float)(hitbox.arribader.y - hitbox.abajizq.y))))
-        {
-                
-            collision = true;
+        if ( (f + i)->shown == true) {
+            if (
+                (hitbox.arribader.x > (f[i]).hitbox.abajizq.x) &&
+                (hitbox.abajizq.x < (f[i]).hitbox.arribader.x) &&
+                (hitbox.abajizq.y < (f[i]).hitbox.arribader.y) &&
+                (hitbox.arribader.y > (f[i]).hitbox.abajizq.y ))
+            {
+
+                collision = true;
+            }
         }
     }
     if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
 
+        (f[i]).shown = false;
         return i;
     }
     else {                  //En el caso contrario devuelvo -1
@@ -233,8 +238,7 @@ int Blob::foodCrash(Food* f, int foodShown) {
 }
 void Blob::blobEats(Food* f, int foodIndex) {
 
-    (f[foodIndex]).shown = false;   //Oculto la comida que se comio
-
+    //Hago el resto de las cosas
 
 }
 void Blob::blobMerge(Blob* blobsArray, int blobIndex) {

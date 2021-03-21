@@ -62,44 +62,25 @@ double getDistanceBetweenPoints(Point* p1, Point* p2) {//calcula distancia entre
     return (sqrt((p2->x - p1->x) * (p2->x - p1->x) + (p2->y - p1->y) * (p2->y - p1->y)));
 }
 //////////////////////////////////////////////////////////////////////////
-double getAngleBetweenPoints(Point* C, Point* B) {//calcula el angulo entre dos puntos
-
-//   return(acos((p1->x*p2->x+p1->y*p2->y)/(sqrt((p2->x + p1->x) * (p2->x + p1->x) + (p2->y + p1->y) * (p2->y + p1->y)))));
-//
-//    double Ay = C->y + 10 * sin(angulo);
-//    double Ax = C->x + 10 * cos(angulo);
-//
-//    // The atan2 functions return arctan y/x in the interval [−pi , +pi] radians
-//    double Dir_C_to_A = atan2(Ay - C->y, Ax - C->x);
-//    double Dir_C_to_B = atan2(B->y - C->y, B->x - C->x);
-//    double Angle_ACB = Dir_C_to_A - Dir_C_to_B;
-//
-//    // Handle wrap around
-//    /*if (Angle_ACB > PI) Angle_ACB -= 2*PI;
-//    else if (Angle_ACB < -PI) Angle_ACB += 2*PI;*/
-//    if (Angle_ACB < 0) {
-//        Angle_ACB = -Angle_ACB;
-//    }
-//    // Answer is in the range of [-pi...pi]
-//    return Angle_ACB;
+double getAngleBetweenPoints(Point* C, Point* B) {  //calcula el angulo entre dos puntos
 
     double angulo = (atan2(MOD(B->y - C->y), MOD(B->x - C->x)));
 
-    if (B->y <= C->y && B->x >= C->x ) {            //1er cuadrante
+    if (B->y >= C->y && B->x <= C->x ) {            //1er cuadrante
 
-        //En este caso el angulo es el correcto
+        angulo = angulo + 3 * PI / 2;
     }
-    else if (B->y <= C->y && B->x <= C->x) {        //2do cuadrante
-
-        angulo = angulo + PI / 2;
-    }
-    else if (B->y >= C->y && B->x <= C->x) {        //3er cuadrante
+    else if (B->y >= C->y && B->x >= C->x) {        //2do cuadrante
 
         angulo = angulo + PI;
     }
-    else if (B->y >= C->y && B->x >= C->x) {        //4to cuadrante
+    else if (B->y <= C->y && B->x >= C->x) {        //3er cuadrante
 
-        angulo = angulo + 3 * PI / 2;
+        angulo = angulo + PI / 2;
+    }
+    else if (B->y <= C->y && B->x <= C->x) {        //4to cuadrante
+
+        //En este caso el angulo es el correcto        
     }
 
     return angulo;
