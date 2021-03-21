@@ -26,7 +26,7 @@ public:
 	int blobCrash(Blob * blob, int blobIndex);
 	int foodCrash(Food* f);
 	void blobMerge(Blob* blobsArray, int blobIndex, int RandomJiggleLimit);
-	int blobEats(Food* f, int foodIndex);
+	bool blobEats(void);
 	void blobBirth(Blob* blobs);
 
 //protected:
