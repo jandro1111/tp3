@@ -89,11 +89,11 @@ void Blob::moveblob(void) {
 
     if (auxp.x < 0) {//si no puedo ir mas a la izq salgo por la der
         auxp.x = -auxp.x;
-        auxp.x += (ANCHOMAX - 1);
+        auxp.x += (ANCHOMAX - auxp.x);
     }
     if (auxp.y < 0) {//si tengo que bajar y no puedo salgo por arriba
         auxp.y = -auxp.y;
-        auxp.y += (LARGOMAX - 1);
+        auxp.y += (LARGOMAX -auxp.y);
     }      
     if (auxp.y > LARGOMAX) {//si tengo que subir y no puedo salgo por abajo
         auxp.y -= LARGOMAX;
