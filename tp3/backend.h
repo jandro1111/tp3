@@ -25,6 +25,7 @@ using namespace std;
 #define VACIO 0
 #define MAXBLOB 100
 #define MAXFOOD 100
+#define MAXSPEEDPOSIBLE 500
 #define BLOB1_SIZE 40
 #define BLOB2_SIZE 45
 #define BLOB3_SIZE 80
@@ -33,7 +34,7 @@ using namespace std;
 #define MOD(x) ( ( (x)>=0 ) ? (x) : (-(x)) )
 
 //  STRUCT/CLASS  //
-typedef int(*pCallback) (char*, char*);
+typedef int(*pCallback) (char*, char*, void* userData);
 
 typedef struct {
 	double x;
@@ -51,9 +52,9 @@ typedef struct {
 	bool shown;
 }Food;
 // PROTOTIPOS //
-int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*));
+int parseCmdLine(int argc, char* argv[], pCallback p, void* userData);
 //separa parametros/opciones, devuelve la cantidad de opciones y parametros encontrados o un -1 en caso de error
-int parseCallback(char* key, char* value);//analiza parametros/opciones
+int parseCallback(char* key, char* value, void* userData);//analiza parametros/opciones
 double getRectArea(Rect* r); // calcula el área del rectángulo.
 bool isPointInRect(Point* p, Rect* r); //que determina si el punto p está dentro de o en el borde del rectángulo r.
 double getDistanceBetweenPoints(Point*, Point*);//calculo la distancia entre 2 puntos

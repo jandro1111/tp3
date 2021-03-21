@@ -19,7 +19,7 @@
 #define SCREEN_SIZE 1
 #define SCREEN_W (ANCHOMAX*SCREEN_SIZE)
 #define SCREEN_H (LARGOMAX*SCREEN_SIZE)
-#define FPS 20.0
+#define FPS 10.0
 
 #define BUTTON1X 0
 #define BUTTON1Y 50

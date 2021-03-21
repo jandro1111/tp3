@@ -1,62 +1,124 @@
 ﻿// INCLUDES //
-#include"backend.h"
+#include "backend.h"
+#include "simulation.h"
+
 // FUNCTIONS //
-int parseCmdLine(int argc, char* argv[], int(*pCallback) (char*, char*)) {//cant de opciones +params o -1 en error
-    int i = 1;//la primer palabra,con indice 0, es el nombre del programa, y esta no se cuenta
-    int datos = 0;//params+opciones
-    for (i = 1; i < argc; ++i) {
-        if (argv[i][0] == '-') {//si hay opcion
-            if (i != (argc - 1)) {//si no es el ultimo elemento que recibe
-                if (argv[i][1] == NULL) {//si es una clave sin valor
-                    return ERROR1;
+
+int parseCmdLine(int argc, char* argv[], pCallback p, void* userData) {
+
+    int salida;
+    int error = 0;
+    int conteo = 0;
+    int i = 1;
+
+    while (i < argc && error == 0) {
+
+        if (argv[i][0] == '-') {
+
+            if ((i + 1) >= argc) {
+
+                error = 1; //En este caso estarias poniendo una clave sin valor
+            }
+            else {
+
+                if (p(argv[i], argv[i + 1], userData) == 0) {
+
+                    error = 1;
                 }
                 else {
-                    if (pCallback(argv[i], argv[i + 1]) == 1) {//si esta todo bien..
-                        ++datos;
-                        ++i;//salteo el valor de la clave
-                    }
-                    else {//parsecallback tiro error
-                        return ERROR1;
-                    }
+                    i++;
+                    conteo++;
                 }
             }
-            else {
-                return ERROR1;
-            }
-        }
-        else {//encontre un parametro
-            if (pCallback(NULL, argv[i]) == 1) {//si esta todo bien
-                ++datos;
-            }
-            else {//parsecallback tiro error
-                return ERROR1;
-            }
-        }
-    }
-    return datos;
-}
-////////////////////////////////////////////////////////////
-int parseCallback(char* key, char* value) {//0 si no es valido 1 si si
-
-    if ((key == NULL)) {//es un parametro
-        return OK;
-    }
-    else {//es una opcion
-        return NOPARAM;//voy a hacer que no acepte opciones
-        /*if (key[1] == NULL) {//clave vacia devuelve error
-            return NOPARAM;
         }
         else {
-            if (value == NULL) {//si el valor es null es una clave sin valor y devuelve error
-                return NOPARAM;
+
+            if (p(NULL, argv[i], userData) == 0) {
+
+                error = 1;
             }
             else {
-                return OK;
+
+                ++conteo;
             }
         }
-         */
+
+        i++;
     }
+
+    if (error == 0) {
+
+        salida = conteo;
+    }
+    else {
+
+        salida = -1;
+    }
+
+    return salida;
 }
+//////////////////////////////////////////////////////////////////////////////////////
+
+int parseCallback(char* key, char* value, void* userData) {
+
+    int esCorrecto = 1;
+
+    simulation* Simu = (simulation*)userData;
+
+    if (key == NULL) {
+
+        std::cout << "No se esperan parametros" << endl;
+        esCorrecto = 0; 
+    }
+    else {
+        if (!strcmp(key, "-modo")) {
+
+            if (!strcmp(value, "1")) {
+
+                Simu->modo = 1;
+            }
+            else if (!strcmp(value, "2")) {
+
+                Simu->modo = 2;
+            }
+            else {
+                printf("Error en el ingreso del modo\n");
+                esCorrecto = 0;
+            }
+        }
+        else if (!strcmp(key, "-blobscantini")) {
+
+            if (atoi(value) > 0 && atoi(value) < MAXBLOB) {
+
+                Simu->blobsCantIni = atoi(value);
+            }
+            else {
+                printf("Error en el ingreso de la cantidad inicial de blobs\n");
+                esCorrecto = 0;
+            }
+        }
+        else if (!strcmp(key, "-velmax")) {
+
+            if (atoi(value) > 0 && atoi(value) < MAXSPEEDPOSIBLE) {
+
+                Simu->velMax = atoi(value);
+            }
+            else {
+
+                printf("Error en el ingreso de la velocidadmaxima\n");
+                esCorrecto = 0;
+            }
+        }
+        else {
+
+            printf("La opcion %s ingresada no es valida\n", key);
+            esCorrecto = 0;
+        }
+    }
+
+    return esCorrecto;
+}
+
 /// ////////////////////////////////////////////////////////////////////////////////////
 double getDistanceBetweenPoints(Point* p1, Point* p2) {//calcula distancia entre dos puntos
     return (sqrt((p2->x - p1->x) * (p2->x - p1->x) + (p2->y - p1->y) * (p2->y - p1->y)));

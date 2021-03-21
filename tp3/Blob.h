@@ -2,6 +2,9 @@
 #ifndef BLOB_H
 #define BLOB_H
 #include"backend.h"
+
+enum {BabyBlob = 1, GrownBlob, GoodOldBlob};
+
 class Blob
 {
 public:
@@ -21,9 +24,10 @@ public:
 	void sethitbox(Point p);// cambio el hitbox, en funcion de la posicion y el tipo de blob
 	void blobfeed(int,Food*);//hace que el blob se mueva hacia la comida
 	int blobCrash(Blob * blob, int blobIndex);
-	int foodCrash(Food* f, int foodShown);
-	void blobMerge(Blob* blobsArray, int blobIndex);
-	void blobEats(Food* f, int foodIndex);
+	int foodCrash(Food* f);
+	void blobMerge(Blob* blobsArray, int blobIndex, int RandomJiggleLimit);
+	int blobEats(Food* f, int foodIndex);
+	void blobBirth(Blob* blobs);
 
 //protected:
 

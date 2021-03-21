@@ -37,17 +37,20 @@ void simulation::runSim(void) {
             blob[i].setvel(velPorc);
             blob[i].blobfeed(smellRadius, comida);
 
-            crashCheck = blob[i].foodCrash(comida, foodShown);   
+            crashCheck = blob[i].foodCrash(comida);   
             if (crashCheck != -1) {
+                foodShown--;
+                if (blob[i].blobEats(comida, crashCheck)) { //En el caso de que se produzca un blobBirth
 
-                blob[i].blobEats(comida, crashCheck);
+                    blob[i].blobBirth(blob);
+                }
                 crashCheck = -1;
             }
             
             crashCheck = blob[i].blobCrash(blob, i);
             if (crashCheck != -1) {
 
-                blob[i].blobMerge(blob, crashCheck);
+                blob[i].blobMerge(blob, crashCheck, randomJiggleLimit);
                 crashCheck = -1;
             }
 
@@ -58,3 +61,4 @@ void simulation::runSim(void) {
     cout << foodShown << endl;
     cout << "\n" << endl;
 }
+
