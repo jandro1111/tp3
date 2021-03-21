@@ -21,15 +21,19 @@ int main(int argc, char** argv)
 
     srand(time(NULL));          //para randomizar
 
-    //Escribi en consola tipo -modo 1 -blobscantini 10 -velmax 20 
-    parseCmdLine(argc, argv, parseCallback, &Simu);
+    //Escribi en consola por ej:
+    //                         -modo 1 -blobscantini 10 -velmax 20 
+    if (parseCmdLine(argc, argv, parseCallback, &Simu) != 3 ) {
+        
+        cout << "Ingrese solo los datos pre-simulacion" << endl;
+    }
 
     printf("modo: %d, velMax: %d, blobsCantIni: %d\n", Simu.modo, Simu.velMax, Simu.blobsCantIni);
 
-    Simu.deathChance = 0;       //sacar TODO LO SIGUIENTE cuando este la gui
-    Simu.velPorc = 0.5;         //entre 0 y 1 empieza en 0.5
-    Simu.foodCount = 10;        // entre 0 y 100, empiza seteada en 10
-    Simu.smellRadius = 100;     //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
+    Simu.deathChance = 0;           //sacar TODO LO SIGUIENTE cuando este la gui
+    Simu.velPorc = 0.5;             //entre 0 y 1 empieza en 0.5
+    Simu.foodCount = 10;            // entre 0 y 100, empiza seteada en 10
+    Simu.smellRadius = 100;         //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     Simu.randomJiggleLimit = 180;
 
     Simu.initSim();
