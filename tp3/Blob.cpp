@@ -223,13 +223,19 @@ int Blob::foodCrash(Food* f, int foodShown) {
         }
     }
     if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
-        f[i].shown = false;
+
         return i;
     }
     else {                  //En el caso contrario devuelvo -1
 
         return -1;
     }
+}
+void Blob::blobEats(Food* f, int foodIndex) {
+
+    (f[foodIndex]).shown = false;   //Oculto la comida que se comio
+
+
 }
 void Blob::blobMerge(Blob* blobsArray, int blobIndex) {
 

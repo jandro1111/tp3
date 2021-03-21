@@ -1,4 +1,3 @@
-
 #include "simulation.h"
 
 void simulation::initSim(void){
@@ -30,16 +29,18 @@ void simulation::runSim(void) {
     int crashCheck = -1;
 
     for (int i = 0; i < MAXBLOB; ++i) {
+
         if ((blob[i].getdead()) == false) {     //si no esta muerto, hace todo lo de un blob vivo
+
             blob[i].moveblob();                 //muevo el blob
             blob[i].blobdeath(deathChance);     //veo si se muere
             blob[i].setvel(velPorc);
             blob[i].blobfeed(smellRadius, foodShown, comida);
 
-            //blob[i].foodCrash(f, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
+            blob[i].foodCrash(comida, foodShown);    //Aca dudo si hay que llamar a foodshown para correr el arreglo
             if (crashCheck != -1) {
 
-  //            blob[i].setfood();  //Aca creo que se usaria esto pero lo dudo
+                blob[i].blobEats(comida, crashCheck);
                 crashCheck = -1;
             }
             
@@ -53,7 +54,7 @@ void simulation::runSim(void) {
             cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
         }
     }
-    foodShown = foodspawn(foodCount, comida, foodShown);//genera de a una comida x vez
+    foodShown = foodspawn(foodCount, comida, foodShown);                   //genera de a una comida x vez
     cout << foodShown << endl;
     cout << "\n" << endl;
 }
