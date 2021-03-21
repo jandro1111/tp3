@@ -278,3 +278,21 @@ void Blob::blobMerge(Blob* blobsArray, int blobIndex, int RandomJiggleLimit) {
         angle = angle - 2 * PI;
     }
 }
+
+void Blob::blobBirth(Blob* blobs) {
+
+    bool encontrado = false;
+
+    for (int i = 0; (i < MAXBLOB) && (encontrado == false); i++) { //Busco un blob que este muerto
+
+        if ((blobs[i]).dead == true) {   //Cuando encuentro un blob muerto, lo revivo e inicializo
+
+            (blobs[i]).dead = false;
+            (blobs[i]).tipo = BabyBlob;
+            (blobs[i]).p.x = p.x;
+            (blobs[i]).p.y = p.y;
+
+            encontrado = true;
+        }
+    }
+}

@@ -30,9 +30,6 @@ int main(int argc, char** argv)
     Simu.velPorc = 0.5;         //entre 0 y 1 empieza en 0.5
     Simu.foodCount = 10;        // entre 0 y 100, empiza seteada en 10
     Simu.smellRadius = 100;     //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
-    Simu.modo = 1;
-    Simu.blobsCantIni = 10;
-    Simu.velMax = 10;
     Simu.randomJiggleLimit = 180;
 
     Simu.initSim();
@@ -54,22 +51,5 @@ int main(int argc, char** argv)
 
     return(EXIT_SUCCESS);
 
-}
-void Blob::blobBirth(Blob* blobs) {
-
-    bool encontrado = false;    
-
-    for (int i = 0; (i < MAXBLOB) && (encontrado == false); i++) { //Busco un blob que este muerto
-
-        if ((blobs[i]).dead == true) {   //Cuando encuentro un blob muerto, lo revivo e inicializo
-
-            (blobs[i]).dead = false;
-            (blobs[i]).tipo = BabyBlob;
-            (blobs[i]).p.x = p.x;
-            (blobs[i]).p.y = p.y;
-
-            encontrado = true;
-        }
-    }
 }
 
