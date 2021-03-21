@@ -23,6 +23,7 @@ public:
 	int blobCrash(Blob * blob, int blobIndex);
 	int foodCrash(Food* f, int foodShown);
 	void blobMerge(Blob* blobsArray, int blobIndex);
+	void blobEats(Food* f, int foodIndex);
 
 //protected:
 

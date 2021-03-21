@@ -19,9 +19,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    srand(time(NULL));//para randomizar
-
-    //AL FINAL SE USA SOLO ALLEGRO, SIN GUI
+    srand(time(NULL));          //para randomizar
 
     /*
 
@@ -76,57 +74,13 @@ int main(int argc, char** argv)
     //radio de deteccion de comida
 
 
-    Simu.deathChance = 0.05;    //sacar TODO LO SIGUIENTE cuando este la gui
+    Simu.deathChance = 0;       //sacar TODO LO SIGUIENTE cuando este la gui
     Simu.velPorc = 0.5;         //entre 0 y 1 empieza en 0.5
     Simu.foodCount = 10;        // entre 0 y 100, empiza seteada en 10
     Simu.smellRadius = 100;     //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     Simu.modo = 1;
-    Simu.blobsCantIni = 5;
+    Simu.blobsCantIni = 1;
     Simu.velMax = 10;
-
-    /*
-    blobcant = blobcantini;
-    //double prob = 0.05;//sacar cuando este la gui
-    double velpor = 0.5;//entre 0 y 1 empieza en 0.5
-    int foodcount = 10;// entre 0 y 100, empiza seteada en 10
-    int smellradio = 100;//el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
-    int i;
-
-    //inicializo los blobs
-    Blob* blob = static_cast<Blob*>(::operator new[](MAXBLOB * sizeof(Blob)));
-    for (size_t i = 0; i < MAXBLOB; i++) {//creo el arreglo con todos los blobs que voy a poder usar
-        ::new (blob + i) Blob(1, modo, velpor, velmax);
-    }
-    for (i = blobcantini; i < MAXBLOB;++i) {//mato todos los que no estoy usando segun la cantidad de blobs iniciales
-        blob[i].kill();
-    }
-    //inicializo la comida
-    int foodshown = 0;
-    Food comida[MAXFOOD];
-    Food* f = comida;
-    for (i = 0; i < MAXFOOD; ++i) {
-        comida[i].shown = false;//empizo sin mostrar ninguna comida
-        //despues cuando spawneo la comida le inicializo el resto de los datos
-    }
-
-    cout << "vel: " << (velmax * velpor) << " vel: %"<< (velpor*100)<< endl;
-    for (ticks = 0; ticks < 20; ++ticks) {
-        for (i = 0; i < MAXBLOB; ++i) {
-            if ((blob[i].getdead())==false){//si no esta muerto, hace todo lo de un blob vivo
-                blob[i].moveblob();//muevo el blob
-                blob[i].blobdeath(prob);//veo si se muere
-                blob[i].setvel(velpor);
-                //blob[i].blobfeed(smellradio, foodshown, f);
-                cout << i <<" posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
-            }
-            draw_all(&Simu, &drawing);
-        }
-        foodshown=foodspawn(foodcount,f,foodshown);//genera de a una comida x vez
-        cout << foodshown << endl;
-        cout << "\n" << endl;
-    }
-
-    */
 
     Simu.initSim();
 

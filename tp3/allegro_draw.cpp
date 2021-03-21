@@ -118,11 +118,11 @@ void draw_all(simulation* sim, drawingData* draw)
 	}
 
 	//Dibujo de la comida
-	/*for (n = 0; n < MAXFOOD; n++)
+	for (n = 0; n < MAXFOOD; n++)
 	{
 		if (sim->comida[n].shown == true)
 			al_draw_bitmap(draw->food, (sim->comida[n].hitbox.arribader.x) - (FOOD_SIZE), (sim->comida[n].hitbox.arribader.y) , 0);
-	}*/
+	}
 
 	al_flip_display();
 }
