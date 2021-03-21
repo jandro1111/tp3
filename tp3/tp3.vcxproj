@@ -176,9 +176,12 @@
   <ItemGroup>
     <Image Include="babyblob.png" />
     <Image Include="background.jpg" />
+    <Image Include="flecha.png" />
     <Image Include="food.png" />
     <Image Include="goodoldblob.png" />
     <Image Include="grownblob.png" />
+    <Image Include="info.png" />
+    <Image Include="menu.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

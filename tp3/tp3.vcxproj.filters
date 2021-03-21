@@ -61,6 +61,15 @@
     <Image Include="grownblob.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="flecha.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="menu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="info.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -6,6 +6,9 @@ drawingData::drawingData(void) {
 	timer = NULL;
 	buffer = NULL;
 	buffer2 = NULL;
+	flecha = NULL;
+	bmenu = NULL;
+	moreinfo = NULL;
 	food = NULL;
 	blob1 = NULL;
 	blob2 = NULL;
@@ -98,8 +101,18 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
-	if (!(draw->food = al_load_bitmap("food.png"))) {
-		fprintf(stderr, "Unable to load png5\n");
+	if (!(draw->flecha = al_load_bitmap("flecha.png"))) {
+		fprintf(stderr, "Unable to load png6\n");
+		return -1;
+	}
+
+	if (!(draw->bmenu = al_load_bitmap("menu.png"))) {
+		fprintf(stderr, "Unable to load png7\n");
+		return -1;
+	}
+
+	if (!(draw->moreinfo = al_load_bitmap("info.png"))) {
+		fprintf(stderr, "Unable to load png6\n");
 		return -1;
 	}
 
@@ -188,7 +201,7 @@ void draw_all(simulation* sim, drawingData* draw)
 void post_draw(simulation* sim, drawingData* draw)
 {
 
-	al_draw_bitmap(draw->blob2, BUTTON1X, BUTTON1Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->bmenu, BUTTON1X, BUTTON1Y - BUTTON_SIZE, 0);
 
 	al_set_target_bitmap(draw->buffer2);
 
@@ -199,9 +212,9 @@ void post_draw(simulation* sim, drawingData* draw)
 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	al_draw_bitmap(draw->blob2,BUTTON3X , BUTTON3Y-BUTTON_SIZE, 0);
-	al_draw_bitmap(draw->blob2, BUTTON4X, BUTTON4Y - BUTTON_SIZE, 0);
-	al_draw_bitmap(draw->blob2, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha,BUTTON3X , BUTTON3Y-BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha, BUTTON4X, BUTTON4Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
+	al_draw_bitmap(draw->moreinfo, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
 
 	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY-20 , ALLEGRO_ALIGN_CENTER, "velocidad");
 	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY, ALLEGRO_ALIGN_CENTER, "%d%%", (int)(sim->velPorc*100));

@@ -56,6 +56,9 @@ public:
 	ALLEGRO_BITMAP* blob1;
 	ALLEGRO_BITMAP* blob2;
 	ALLEGRO_BITMAP* blob3;
+	ALLEGRO_BITMAP* flecha;
+	ALLEGRO_BITMAP* bmenu;
+	ALLEGRO_BITMAP* moreinfo;
 
 	ALLEGRO_BITMAP* food;
 
