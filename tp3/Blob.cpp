@@ -183,6 +183,7 @@ int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
 
     bool collision = false;
     int i;
+    int BlobCrashedIndex;
 
     for (i = 0; (i < MAXBLOB) && (collision == false); i++) { //Checkeo colisiones con otros blobs
         if (i != blobIndex) {
@@ -194,6 +195,7 @@ int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
             {
                 if ( (tipo == (blobsArray[i]).tipo) && (tipo != 3) ) { //La colision solo se realizara si los blobs son del mismo tipo, y si son distintos del tipo 3
                         
+                    BlobCrashedIndex = i;
                     collision = true;
                 }
             }
@@ -201,7 +203,7 @@ int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
     }
     if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
 
-        return i;
+        return BlobCrashedIndex;
     }
     else {                  //En el caso contrario devuelvo -1
 
@@ -212,6 +214,7 @@ int Blob::foodCrash(Food* f, int foodShown) {
 
     bool collision = false;
     int i;
+    int EatenIndex;
 
     for (i = 0; (i < MAXFOOD) && (collision == false); i++) { //Checkeo colisiones con otros blobs
         if ( (f + i)->shown == true) {
@@ -221,15 +224,15 @@ int Blob::foodCrash(Food* f, int foodShown) {
                 (hitbox.abajizq.y < (f[i]).hitbox.arribader.y) &&
                 (hitbox.arribader.y > (f[i]).hitbox.abajizq.y ))
             {
-
+                EatenIndex = i;
                 collision = true;
             }
         }
     }
     if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
 
-        (f[i]).shown = false;
-        return i;
+        (f[EatenIndex]).shown = false;
+        return EatenIndex;
     }
     else {                  //En el caso contrario devuelvo -1
 
