@@ -91,7 +91,7 @@ void draw_all(simulation* sim, drawingData* draw)
 {
 	al_draw_bitmap(draw->background, 0, 0, 0);//se dibuja el fondo
 
-	int flag = 0;
+	int flag = ALLEGRO_FLIP_HORIZONTAL;
 	float angulo[MAXBLOB];
 	int n;
 
@@ -102,18 +102,23 @@ void draw_all(simulation* sim, drawingData* draw)
 		{
 			angulo[n] = -(sim->blob[n].angle);
 
+			flag = ALLEGRO_FLIP_HORIZONTAL;
+
 			if (sim->blob[n].angle <= (PI / 2) || sim->blob[n].angle >= ((3 / 2) * PI))
 			{
-				flag = ALLEGRO_FLIP_HORIZONTAL;
+				flag = 0;
 				angulo[n] = PI - sim->blob[n].angle;
 			}
 
 			if (sim->blob[n].tipo == 1)
-				al_draw_rotated_bitmap(draw->blob1, (sim->blob[n].hitbox.arribader.x) - (BLOB1_SIZE / 2), (sim->blob[n].hitbox.arribader.y) + (BLOB1_SIZE / 2), sim->blob[n].p.x, sim->blob[n].p.y, angulo[n], flag);
+				//al_draw_rotated_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB1_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
+				al_draw_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, flag);
 			else if (sim->blob[n].tipo == 2)
-				al_draw_rotated_bitmap(draw->blob2, (sim->blob[n].hitbox.arribader.x) - (BLOB2_SIZE / 2), (sim->blob[n].hitbox.arribader.y) + (BLOB1_SIZE / 2), sim->blob[n].p.x, sim->blob[n].p.y, angulo[n], flag);
+				al_draw_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, flag);
+				//al_draw_rotated_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB2_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 			else if (sim->blob[n].tipo == 3)
-				al_draw_rotated_bitmap(draw->blob3, (sim->blob[n].hitbox.arribader.x) - (BLOB3_SIZE / 2), (sim->blob[n].hitbox.arribader.y) + (BLOB1_SIZE / 2), sim->blob[n].p.x, sim->blob[n].p.y, angulo[n], flag);
+				al_draw_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, flag);
+				//al_draw_rotated_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB3_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 		}
 	}
 
