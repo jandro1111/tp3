@@ -219,10 +219,10 @@ int Blob::foodCrash(Food* f) {
     for (i = 0; (i < MAXFOOD) && (collision == false); i++) { //Checkeo colisiones con otros blobs
         if ( (f + i)->shown == true) {
             if (
-                (hitbox.arribader.x > (f[i]).hitbox.abajizq.x) &&
-                (hitbox.abajizq.x < (f[i]).hitbox.arribader.x) &&
-                (hitbox.abajizq.y < (f[i]).hitbox.arribader.y) &&
-                (hitbox.arribader.y > (f[i]).hitbox.abajizq.y ))
+                (hitbox.arribader.x > (f+i)->hitbox.abajizq.x) &&
+                (hitbox.abajizq.x < (f+i)->hitbox.arribader.x) &&
+                (hitbox.abajizq.y < (f+i)->hitbox.arribader.y) &&
+                (hitbox.arribader.y > (f+i)->hitbox.abajizq.y ))
             {
                 EatenIndex = i;
                 collision = true;
@@ -231,7 +231,7 @@ int Blob::foodCrash(Food* f) {
     }
     if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
 
-        (f[EatenIndex]).shown = false;
+        (f+EatenIndex)->shown = false;
         return EatenIndex;
     }
     else {                  //En el caso contrario devuelvo -1
