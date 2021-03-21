@@ -36,8 +36,8 @@
 #define BUTTON4X 40
 #define BUTTON4Y (LARGOMAX/2)+60
 
-#define BUTTON5X -20
-#define BUTTON5Y 440
+#define BUTTON5X -18
+#define BUTTON5Y 445
 
 #define BUTTON_SIZE 50
 

@@ -101,6 +101,11 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
+	if (!(draw->food = al_load_bitmap("food.png"))) {
+		fprintf(stderr, "Unable to load png5\n");
+		return -1;
+	}
+
 	if (!(draw->flecha = al_load_bitmap("flecha.png"))) {
 		fprintf(stderr, "Unable to load png6\n");
 		return -1;
@@ -112,7 +117,7 @@ int allegro_start(drawingData* draw)
 	}
 
 	if (!(draw->moreinfo = al_load_bitmap("info.png"))) {
-		fprintf(stderr, "Unable to load png6\n");
+		fprintf(stderr, "Unable to load png8\n");
 		return -1;
 	}
 
@@ -183,6 +188,7 @@ void draw_all(simulation* sim, drawingData* draw)
 		}
 	}
 
+
 	//Dibujo de la comida
 	for (n = 0; n < MAXFOOD; n++)
 	{
@@ -190,8 +196,6 @@ void draw_all(simulation* sim, drawingData* draw)
 			al_draw_bitmap(draw->food, (sim->comida[n].hitbox.arribader.x) - (FOOD_SIZE), (sim->comida[n].hitbox.arribader.y) , 0);
 	}
 
-	//Dibujo del mouse
-	al_draw_bitmap(draw->food, draw->pointer_x, draw->pointer_y, 0);
 
 	post_draw(sim,draw);
 }
