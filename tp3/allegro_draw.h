@@ -21,6 +21,20 @@
 #define SCREEN_H (LARGOMAX*SCREEN_SIZE)
 #define FPS 20.0
 
+#define BUTTON1X 0
+#define BUTTON1Y 50
+
+#define BUTTON2X 300
+#define BUTTON2Y 50
+
+#define BUTTON3X 40
+#define BUTTON3Y 150
+
+#define BUTTON4X 40
+#define BUTTON4Y 300
+
+#define BUTTON_SIZE 50
+
 
 class drawingData
 {
@@ -42,11 +56,14 @@ public:
 	ALLEGRO_FONT* font1;
 	ALLEGRO_FONT* font2;
 
-	bool redraw = false;
-	bool do_exit = false;
+	bool redraw ;
+	bool do_exit;
 
 	float pointer_x;
 	float pointer_y;
+
+	float offset;
+	bool menu;
 };
 
 
@@ -57,7 +74,9 @@ void draw_all(simulation* sim, drawingData* draw);
 
 void post_draw(drawingData* draw);
 
-void allegro_events(drawingData* draw);
+void allegro_events(simulation* sim, drawingData* draw);
+
+bool isButtonPress(drawingData* draw, float abajoizqx, float abajoizqy);
 
 #endif /* ALLEGRO_DRAW_H */
 

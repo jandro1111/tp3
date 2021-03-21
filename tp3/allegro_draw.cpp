@@ -16,6 +16,8 @@ drawingData::drawingData(void) {
 	do_exit = false;
 	pointer_x = 0;
 	pointer_y = 0;
+	offset= 0;
+	menu = false;
 }
 
 int allegro_start(drawingData* draw)
@@ -175,13 +177,25 @@ void draw_all(simulation* sim, drawingData* draw)
 
 void post_draw(drawingData* draw)
 {
+
+	al_draw_bitmap(draw->blob2, BUTTON1X, BUTTON1Y - BUTTON_SIZE, 0);
+
 	al_set_target_backbuffer(draw->display);
 
-	al_draw_scaled_bitmap(draw->buffer,0,0,ANCHOMAX,LARGOMAX,0,0,SCREEN_W,SCREEN_H,0);
+	if (draw->offset > 0 && draw->menu == false)
+		draw->offset-=20;
+
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	al_draw_bitmap(draw->blob2,BUTTON3X, BUTTON3Y - BUTTON_SIZE,0);
+	al_draw_bitmap(draw->blob2, BUTTON4X, BUTTON4Y - BUTTON_SIZE, 0);
+
+	al_draw_scaled_bitmap(draw->buffer,0,0,ANCHOMAX,LARGOMAX,draw->offset,0,SCREEN_W,SCREEN_H,0);
+	
 	al_flip_display();
 }
 
-void allegro_events(drawingData* draw)
+void allegro_events(simulation* sim, drawingData* draw)
 {
 	ALLEGRO_EVENT ev;
 	if (al_get_next_event(draw->event_queue, &ev)) //Toma un evento de la cola
@@ -189,13 +203,43 @@ void allegro_events(drawingData* draw)
 		if (ev.type == ALLEGRO_EVENT_TIMER)
 			draw->redraw = true;
 
-		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)//Si se cierra el display o click de mouse cerrar
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE )//Si se cierra el display o click de mouse cerrar
 			draw->do_exit = true;
+
 
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES || ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
 		{
-			draw->pointer_y = ev.mouse.y;
-			draw->pointer_x = ev.mouse.x;
+			draw->pointer_y = ev.mouse.y/SCREEN_SIZE;
+			draw->pointer_x = ev.mouse.x/SCREEN_SIZE;
+		}
+
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+		{
+			if (isButtonPress(draw, BUTTON1X, BUTTON1Y) && draw->menu == false)
+			{
+				draw->offset = 300* SCREEN_SIZE;
+				draw->menu = true;
+			}
+
+			if (draw->menu == true)
+			{
+				if (isButtonPress(draw, BUTTON2X, BUTTON2Y))
+					draw->menu = false;
+				if (isButtonPress(draw, BUTTON3X, BUTTON3Y))
+					sim->velPorc += 0.05;
+				if (isButtonPress(draw, BUTTON4X, BUTTON4Y))
+					sim->velPorc -= 0.05;
+			}
+				
 		}
 	}
+}
+
+bool isButtonPress(drawingData* draw, float abajoizqx , float abajoizqy ) {
+	bool a;
+		if (((draw->pointer_x) > (abajoizqx)) && ((draw->pointer_y) < (abajoizqy)) && ((draw->pointer_x) < (abajoizqx+BUTTON_SIZE)) && ((draw->pointer_y) > (abajoizqy - BUTTON_SIZE)))
+			a = true;
+		else a = false;
+
+	return a;
 }
