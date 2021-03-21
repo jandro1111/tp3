@@ -221,7 +221,7 @@ void post_draw(simulation* sim, drawingData* draw)
 	al_draw_bitmap(draw->moreinfo, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
 
 	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY-20 , ALLEGRO_ALIGN_CENTER, "velocidad");
-	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY, ALLEGRO_ALIGN_CENTER, "%d%%", (int)(sim->velPorc*100));
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY, ALLEGRO_ALIGN_CENTER, "%.0f%%", sim->velPorc*100);
 
 	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 110, ALLEGRO_ALIGN_LEFT, "Blobs con vida:");
 	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 130, ALLEGRO_ALIGN_LEFT, "%d", countLiveBlobs(sim));
@@ -274,8 +274,10 @@ void allegro_events(simulation* sim, drawingData* draw)
 					draw->menu = false;
 				if (isButtonPress(draw, BUTTON3X, BUTTON3Y))
 					sim->velPorc += 0.1;
-				if (isButtonPress(draw, BUTTON4X, BUTTON4Y))
+				if (isButtonPress(draw, BUTTON4X, BUTTON4Y) )
 					sim->velPorc -= 0.1;
+				if(sim->velPorc < 0)
+					sim->velPorc = 0;
 			}
 			if (isButtonPress(draw, BUTTON5X, BUTTON5Y))
 			{
