@@ -2,6 +2,9 @@
 
 drawingData::drawingData(void) {
 	background = NULL;
+	event_queue = NULL;
+	timer = NULL;
+	buffer = NULL;
 	food = NULL;
 	blob1 = NULL;
 	blob2 = NULL;
@@ -9,6 +12,10 @@ drawingData::drawingData(void) {
 	display = NULL;
 	font1 = NULL;
 	font2 = NULL;
+	redraw = false;
+	do_exit = false;
+	pointer_x = 0;
+	pointer_y = 0;
 }
 
 int allegro_start(drawingData* draw)
@@ -24,7 +31,24 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
-	draw->display = al_create_display(ANCHOMAX, LARGOMAX);
+	if (!al_install_mouse()) {
+		fprintf(stderr, "failed to initialize the mouse!\n");
+		return -1;
+	}
+
+	draw->event_queue = al_create_event_queue();
+	if (!draw->event_queue) {
+		fprintf(stderr, "failed to create event_queue!\n");
+		return -1;
+	}
+
+	draw->timer = al_create_timer(1.0 / FPS);
+	if (!draw->timer) {
+		fprintf(stderr, "failed to create timer!\n");
+		return -1;
+	}
+
+	draw->display = al_create_display(SCREEN_W, SCREEN_H);
 
 	if (!draw->display)
 	{
@@ -35,6 +59,12 @@ int allegro_start(drawingData* draw)
 
 	if (!al_init_image_addon()) {
 		fprintf(stderr, "Unable to start image addon \n");
+		return -1;
+	}
+
+	draw->buffer = al_create_bitmap(ANCHOMAX, LARGOMAX);
+	if (!draw->buffer) {
+		fprintf(stderr, "failed to create buffer!\n");
 		return -1;
 	}
 
@@ -80,7 +110,14 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}*/
 
-	al_set_target_backbuffer(draw->display);
+	al_set_target_bitmap(draw->buffer);
+	
+
+	al_register_event_source(draw->event_queue, al_get_display_event_source(draw->display));
+	al_register_event_source(draw->event_queue, al_get_timer_event_source(draw->timer));
+	al_register_event_source(draw->event_queue, al_get_mouse_event_source());
+
+	al_start_timer(draw->timer);
 
 	return 0;
 }
@@ -89,6 +126,7 @@ int allegro_start(drawingData* draw)
 
 void draw_all(simulation* sim, drawingData* draw)
 {
+	al_set_target_bitmap(draw->buffer);
 	al_draw_bitmap(draw->background, 0, 0, 0);//se dibuja el fondo
 
 	int flag = ALLEGRO_FLIP_HORIZONTAL;
@@ -129,5 +167,35 @@ void draw_all(simulation* sim, drawingData* draw)
 			al_draw_bitmap(draw->food, (sim->comida[n].hitbox.arribader.x) - (FOOD_SIZE), (sim->comida[n].hitbox.arribader.y) , 0);
 	}
 
+	//Dibujo del mouse
+	al_draw_bitmap(draw->food, draw->pointer_x, draw->pointer_y, 0);
+
+	post_draw(draw);
+}
+
+void post_draw(drawingData* draw)
+{
+	al_set_target_backbuffer(draw->display);
+
+	al_draw_scaled_bitmap(draw->buffer,0,0,ANCHOMAX,LARGOMAX,0,0,SCREEN_W,SCREEN_H,0);
 	al_flip_display();
+}
+
+void allegro_events(drawingData* draw)
+{
+	ALLEGRO_EVENT ev;
+	if (al_get_next_event(draw->event_queue, &ev)) //Toma un evento de la cola
+	{
+		if (ev.type == ALLEGRO_EVENT_TIMER)
+			draw->redraw = true;
+
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)//Si se cierra el display o click de mouse cerrar
+			draw->do_exit = true;
+
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES || ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
+		{
+			draw->pointer_y = ev.mouse.y;
+			draw->pointer_x = ev.mouse.x;
+		}
+	}
 }

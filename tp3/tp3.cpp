@@ -84,13 +84,29 @@ int main(int argc, char** argv)
 
     Simu.initSim();
 
-    while (1) {
+   /* while (1) {
 
         Simu.runSim();
 
         draw_all(&Simu, &drawing);
 
         Sleep(100); //Paro medio segundo el programa para poder ver los cambios
+    }*/
+
+    while (!drawing.do_exit) // idem anterior
+    {
+        allegro_events(&drawing);
+
+        if (drawing.redraw && al_is_event_queue_empty(drawing.event_queue))
+        {
+            drawing.redraw = false;
+
+            Simu.runSim();
+
+            draw_all(&Simu, &drawing);
+
+        }
+
     }
 
     return(EXIT_SUCCESS);
