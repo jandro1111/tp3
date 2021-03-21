@@ -14,7 +14,7 @@ public:
 	int velMax;				//Velocidad Maxima, parametro de antes de empezar la simulacion
 	int blobsCantIni;
 
-	int foodShown;	//Para que sirve esto?? 
+	int foodShown;	 
 
 	//Parametros que se definen post-simulacion
 	int smellRadius;

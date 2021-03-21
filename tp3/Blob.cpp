@@ -210,7 +210,7 @@ int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
         return -1;
     }
 }
-int Blob::foodCrash(Food* f, int foodShown) {
+int Blob::foodCrash(Food* f) {
 
     bool collision = false;
     int i;
@@ -239,18 +239,42 @@ int Blob::foodCrash(Food* f, int foodShown) {
         return -1;
     }
 }
-void Blob::blobEats(Food* f, int foodIndex) {
+int Blob::blobEats(Food* f, int foodIndex) {
 
-    //Hago el resto de las cosas
+    int salida = 0;
+    food++;
 
+    if (tipo == BabyBlob) {
+        if (food == 5) {
+            salida = 1;
+            food = 0;
+        }
+    }
+    else if (tipo == GrownBlob) {
+        if (food == 4) {
+            salida = 1;
+            food = 0;
+        }
+    }
+    else if (tipo == GoodOldBlob) {
+        if (food == 3) {
+            salida = 1;
+            food = 0;
+        }
+    }
+
+    return salida;
 }
-void Blob::blobMerge(Blob* blobsArray, int blobIndex) {
+void Blob::blobMerge(Blob* blobsArray, int blobIndex, int RandomJiggleLimit) {
 
     (blobsArray[blobIndex]).dead = 1;   //A este lo mato, y al otro lo convierto en el tipo mas grande
                                          
     tipo++;
     sethitbox(p);
     vel = ((blobsArray[blobIndex]).vel + vel) / 2; 
+    angle = (angle + blobsArray[blobIndex].angle) / 2 + ( ((double)RandomJiggleLimit) * 2 * PI )/360;
+    if (angle > 2 * PI) {
 
-    //Tambien tendriamos que asignarle la nueva direccion
+        angle = angle - 2 * PI;
+    }
 }
