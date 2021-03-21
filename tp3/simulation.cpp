@@ -61,3 +61,4 @@ void simulation::runSim(void) {
     cout << foodShown << endl;
     cout << "\n" << endl;
 }
+
