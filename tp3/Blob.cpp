@@ -239,26 +239,26 @@ int Blob::foodCrash(Food* f) {
         return -1;
     }
 }
-int Blob::blobEats(Food* f, int foodIndex) {
+bool Blob::blobEats(void) {
 
-    int salida = 0;
+    bool salida = false;
     food++;
 
     if (tipo == BabyBlob) {
         if (food == 5) {
-            salida = 1;
+            salida = true;
             food = 0;
         }
     }
     else if (tipo == GrownBlob) {
         if (food == 4) {
-            salida = 1;
+            salida = true;
             food = 0;
         }
     }
     else if (tipo == GoodOldBlob) {
         if (food == 3) {
-            salida = 1;
+            salida = true;
             food = 0;
         }
     }

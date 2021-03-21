@@ -32,27 +32,27 @@ void simulation::runSim(void) {
 
         if ((blob[i].getdead()) == false) {     //si no esta muerto, hace todo lo de un blob vivo
 
-            blob[i].moveblob();                 //muevo el blob
-            blob[i].blobdeath(deathChance);     //veo si se muere
-            blob[i].setvel(velPorc);
-            blob[i].blobfeed(smellRadius, comida);
+            blob[i].moveblob();                 //muevo el blob ANDA
+            blob[i].blobdeath(deathChance);     //veo si se muere ANDA
+            blob[i].setvel(velPorc);            //seteo velocidad ANDA
+            blob[i].blobfeed(smellRadius, comida);//hace que se muevan hacia la comida mas cercana ANDA a veces
 
             crashCheck = blob[i].foodCrash(comida);   
             if (crashCheck != -1) {
                 foodShown--;
-                if (blob[i].blobEats(comida, crashCheck)) { //En el caso de que se produzca un blobBirth
+                //if (blob[i].blobEats(comida, crashCheck)) { //En el caso de que se produzca un blobBirth
 
-                    blob[i].blobBirth(blob);
-                }
+                //    blob[i].blobBirth(blob);
+                //}
                 crashCheck = -1;
             }
             
-            crashCheck = blob[i].blobCrash(blob, i);
-            if (crashCheck != -1) {
+            //crashCheck = blob[i].blobCrash(blob, i); // no anda
+            //if (crashCheck != -1) {
 
-                blob[i].blobMerge(blob, crashCheck, randomJiggleLimit);
-                crashCheck = -1;
-            }
+            //    blob[i].blobMerge(blob, crashCheck, randomJiggleLimit);
+            //    crashCheck = -1;
+            //}
 
             cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
         }
