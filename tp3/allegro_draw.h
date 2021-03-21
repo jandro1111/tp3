@@ -16,7 +16,7 @@
 
 #include "simulation.h"
 
-#define SCREEN_SIZE 1
+#define SCREEN_SIZE 2
 #define SCREEN_W (ANCHOMAX*SCREEN_SIZE)
 #define SCREEN_H (LARGOMAX*SCREEN_SIZE)
 #define FPS 10.0
@@ -28,10 +28,16 @@
 #define BUTTON2Y 50
 
 #define BUTTON3X 40
-#define BUTTON3Y 150
+#define BUTTON3Y (LARGOMAX/2)-60
+
+#define VELX 60
+#define VELY (LARGOMAX/2)-30
 
 #define BUTTON4X 40
-#define BUTTON4Y 300
+#define BUTTON4Y (LARGOMAX/2)+60
+
+#define BUTTON5X -20
+#define BUTTON5Y 440
 
 #define BUTTON_SIZE 50
 
@@ -42,6 +48,7 @@ public:
 	drawingData(void);
 
 	ALLEGRO_BITMAP* buffer;
+	ALLEGRO_BITMAP* buffer2;
 	ALLEGRO_EVENT_QUEUE* event_queue;
 	ALLEGRO_TIMER* timer;
 
@@ -64,6 +71,7 @@ public:
 
 	float offset;
 	bool menu;
+	bool info;
 };
 
 
@@ -72,11 +80,13 @@ int allegro_start(drawingData* draw);
 
 void draw_all(simulation* sim, drawingData* draw);
 
-void post_draw(drawingData* draw);
+void post_draw(simulation* sim, drawingData* draw);
 
 void allegro_events(simulation* sim, drawingData* draw);
 
 bool isButtonPress(drawingData* draw, float abajoizqx, float abajoizqy);
+
+int countLiveBlobs(simulation* sim);
 
 #endif /* ALLEGRO_DRAW_H */
 

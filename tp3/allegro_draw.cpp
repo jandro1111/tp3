@@ -5,6 +5,7 @@ drawingData::drawingData(void) {
 	event_queue = NULL;
 	timer = NULL;
 	buffer = NULL;
+	buffer2 = NULL;
 	food = NULL;
 	blob1 = NULL;
 	blob2 = NULL;
@@ -18,6 +19,7 @@ drawingData::drawingData(void) {
 	pointer_y = 0;
 	offset= 0;
 	menu = false;
+	info = false;
 }
 
 int allegro_start(drawingData* draw)
@@ -70,6 +72,12 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
+	draw->buffer2 = al_create_bitmap(300*SCREEN_SIZE, LARGOMAX);
+	if (!draw->buffer) {
+		fprintf(stderr, "failed to create buffer!\n");
+		return -1;
+	}
+
 	if (!(draw->blob1 = al_load_bitmap("babyblob.png"))) {
 		fprintf(stderr, "Unable to load png1\n");
 		return -1;
@@ -99,18 +107,18 @@ int allegro_start(drawingData* draw)
 	al_set_display_icon(draw->display, draw->blob1);
 
 
-	/*al_init_font_addon(); // initialize the font addon
+	al_init_font_addon(); // initialize the font addon
 	al_init_ttf_addon(); // initialize the ttf (True Type Font) addon
-	draw->font1 = al_load_ttf_font("Sans.ttf", DISP_SCALE * 7, 0);
+	draw->font1 = al_load_ttf_font("Sans.ttf", 15, 0);
 	if (!draw->font1) {
 		fprintf(stderr, "Could not load 'Sans.ttf'.\n");
 		return -1;
 	}
-	draw->font2 = al_load_ttf_font("Sans.ttf", DISP_SCALE * 4, 0);
+	draw->font2 = al_load_ttf_font("Sans.ttf", 10, 0);
 	if (!draw->font2) {
 		fprintf(stderr, "Could not load 'Sans.ttf'.\n");
 		return -1;
-	}*/
+	}
 
 	al_set_target_bitmap(draw->buffer);
 	
@@ -172,28 +180,53 @@ void draw_all(simulation* sim, drawingData* draw)
 	//Dibujo del mouse
 	al_draw_bitmap(draw->food, draw->pointer_x, draw->pointer_y, 0);
 
-	post_draw(draw);
+	post_draw(sim,draw);
 }
 
-void post_draw(drawingData* draw)
+
+
+void post_draw(simulation* sim, drawingData* draw)
 {
 
 	al_draw_bitmap(draw->blob2, BUTTON1X, BUTTON1Y - BUTTON_SIZE, 0);
 
-	al_set_target_backbuffer(draw->display);
+	al_set_target_bitmap(draw->buffer2);
 
 	if (draw->offset > 0 && draw->menu == false)
-		draw->offset-=20;
+		draw->offset-=20*SCREEN_SIZE;
+	else if (draw->offset < (300* SCREEN_SIZE) && draw->menu == true)
+		draw->offset += 20 * SCREEN_SIZE;
 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	al_draw_bitmap(draw->blob2,BUTTON3X, BUTTON3Y - BUTTON_SIZE,0);
+	al_draw_bitmap(draw->blob2,BUTTON3X , BUTTON3Y-BUTTON_SIZE, 0);
 	al_draw_bitmap(draw->blob2, BUTTON4X, BUTTON4Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->blob2, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
 
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY-20 , ALLEGRO_ALIGN_CENTER, "velocidad");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY, ALLEGRO_ALIGN_CENTER, "%d%%", (int)(sim->velPorc*100));
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 110, ALLEGRO_ALIGN_LEFT, "Blobs con vida:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 130, ALLEGRO_ALIGN_LEFT, "%d", countLiveBlobs(sim));
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 160, ALLEGRO_ALIGN_LEFT, "Comida actual:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 180, ALLEGRO_ALIGN_LEFT, "%d", sim->foodShown);
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 210, ALLEGRO_ALIGN_LEFT, "Tiempo");
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 230, ALLEGRO_ALIGN_LEFT, "de simulacion:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 250, ALLEGRO_ALIGN_LEFT, "%d seg", (int)(al_get_timer_count(draw->timer)/10));
+
+	if (draw->info==true)
+		al_draw_text(draw->font2, al_map_rgb(255, 255, 255), 40, 400, ALLEGRO_ALIGN_LEFT, "Realizado por Matias, Damian y Alejandro");
+
+	al_set_target_backbuffer(draw->display);
+	al_draw_scaled_bitmap(draw->buffer2, 0, 0, 300, LARGOMAX, 0, 0, 300* SCREEN_SIZE, SCREEN_H, 0);
 	al_draw_scaled_bitmap(draw->buffer,0,0,ANCHOMAX,LARGOMAX,draw->offset,0,SCREEN_W,SCREEN_H,0);
 	
 	al_flip_display();
 }
+
+
 
 void allegro_events(simulation* sim, drawingData* draw)
 {
@@ -216,24 +249,30 @@ void allegro_events(simulation* sim, drawingData* draw)
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
 			if (isButtonPress(draw, BUTTON1X, BUTTON1Y) && draw->menu == false)
-			{
-				draw->offset = 300* SCREEN_SIZE;
 				draw->menu = true;
-			}
 
 			if (draw->menu == true)
 			{
 				if (isButtonPress(draw, BUTTON2X, BUTTON2Y))
 					draw->menu = false;
 				if (isButtonPress(draw, BUTTON3X, BUTTON3Y))
-					sim->velPorc += 0.05;
+					sim->velPorc += 0.1;
 				if (isButtonPress(draw, BUTTON4X, BUTTON4Y))
-					sim->velPorc -= 0.05;
+					sim->velPorc -= 0.1;
+			}
+			if (isButtonPress(draw, BUTTON5X, BUTTON5Y))
+			{
+				if (draw->info == false)
+					draw->info = true;
+				else if (draw->info == true)
+					draw->info = false;
 			}
 				
 		}
 	}
 }
+
+
 
 bool isButtonPress(drawingData* draw, float abajoizqx , float abajoizqy ) {
 	bool a;
@@ -242,4 +281,16 @@ bool isButtonPress(drawingData* draw, float abajoizqx , float abajoizqy ) {
 		else a = false;
 
 	return a;
+}
+
+int countLiveBlobs (simulation* sim)
+{
+	int n;
+	int i=0;
+	for (n = 0; n < MAXBLOB; n++)
+	{
+		if (!(sim->blob[n].dead))
+			i++;
+	}
+	return i;
 }

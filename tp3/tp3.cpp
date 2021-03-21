@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
     while (!drawing.do_exit) // idem anterior
     {
-        allegro_events(&drawing);
+        allegro_events(&Simu, &drawing);
 
         if (drawing.redraw && al_is_event_queue_empty(drawing.event_queue))
         {
