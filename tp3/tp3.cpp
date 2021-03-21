@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 
         draw_all(&Simu, &drawing);
 
-        Sleep(500); //Paro medio segundo el programa para poder ver los cambios
+        Sleep(100); //Paro medio segundo el programa para poder ver los cambios
     }
 
     return(EXIT_SUCCESS);
