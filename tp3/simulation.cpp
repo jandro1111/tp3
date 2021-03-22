@@ -17,13 +17,14 @@ void simulation::initSim(void){
     //inicializo la comida
 
     foodShown = 0;
-    Food comid[MAXFOOD];
+    //Food comid[MAXFOOD];
+    comida = static_cast<Food*>(::operator new[](MAXFOOD * sizeof(Food)));
     
     for (int i = 0; i < MAXFOOD; ++i) {
-        comid[i].shown = false;//empizo sin mostrar ninguna comida
-        //despues cuando spawneo la comida le inicializo el resto de los datos
+        comida[i].shown = false;     //empizo sin mostrar ninguna comida
+                                    //despues cuando spawneo la comida le inicializo el resto de los datos
     }
-    comida = comid;
+    //comida = comid;
 }
 
 void simulation::runSim(void) {
@@ -38,6 +39,7 @@ void simulation::runSim(void) {
             blob[i].blobdeath(deathChance);     //veo si se muere ANDA
             blob[i].setvel(velPorc);            //seteo velocidad ANDA
             blob[i].blobfeed(smellRadius, comida);//hace que se muevan hacia la comida mas cercana ANDA a veces
+
             if (foodShown > 0) {
                 crashCheck = blob[i].foodCrash(comida);
                 if (crashCheck != -1) {
@@ -49,11 +51,13 @@ void simulation::runSim(void) {
                     crashCheck = -1;
                 }
             }
-            crashCheck = blob[i].blobCrash(blob, i);
-            if (crashCheck != -1) {
+            if (blob[i].CantMerge == 0) {
+                crashCheck = blob[i].blobCrash(blob, i);
+                if (crashCheck != -1) {
 
-                blob[i].blobMerge(blob, crashCheck, randomJiggleLimit);
-                crashCheck = -1;
+                    blob[i].blobMerge(blob, crashCheck, randomJiggleLimit);
+                    crashCheck = -1;
+                }
             }
 
             if (blob[i].CantMerge > 0 && blob[i].CantMerge <= UNMERGEABLETICKS) {

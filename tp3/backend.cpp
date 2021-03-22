@@ -209,7 +209,7 @@ bool isPointInRect(Point* p, Rect* r) { //que determina si el punto p está dent
 int foodspawn(int foodmax, Food* f,int foodshown) {
     int i;
     if (foodshown < foodmax) {//si puedo seguir generando comida
-        if ((rand() % 100 + 1) <= 40) {//prob del 40% de generar una comida
+        if ((rand() % 100 + 1) <= 10) {//prob del 40% de generar una comida
             for (i = 0; i < MAXFOOD; ++i) {
                 if ((f + i)->shown == false) {
                     (f + i)->shown = true;//empizo sin mostrar ninguna comida
