@@ -294,6 +294,12 @@ void Blob::blobBirth(Blob* blobs) {
             (blobs[i]).p.y = p.y;
             (blobs[i]).CantMerge = UNMERGEABLETICKS;
 
+            (blobs[i]).angle = angle + PI;  //Lo voy a hacer salir para el lado opuesto
+            if ((blobs[i]).angle > (2* PI) ){
+
+                (blobs[i]).angle -= (2 * PI);
+            }
+
             encontrado = true;
         }
     }
