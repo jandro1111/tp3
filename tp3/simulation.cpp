@@ -38,17 +38,17 @@ void simulation::runSim(void) {
             blob[i].blobdeath(deathChance);     //veo si se muere ANDA
             blob[i].setvel(velPorc);            //seteo velocidad ANDA
             blob[i].blobfeed(smellRadius, comida);//hace que se muevan hacia la comida mas cercana ANDA a veces
+            if (foodShown > 0) {
+                crashCheck = blob[i].foodCrash(comida);
+                if (crashCheck != -1) {
+                    foodShown--;
+                    if (blob[i].blobEats()) { //En el caso de que se produzca un blobBirth
 
-            crashCheck = blob[i].foodCrash(comida);
-            if (crashCheck != -1) {
-                foodShown--;
-                if (blob[i].blobEats()) { //En el caso de que se produzca un blobBirth
-
-                    blob[i].blobBirth(blob);
+                        blob[i].blobBirth(blob);
+                    }
+                    crashCheck = -1;
                 }
-                crashCheck = -1;
             }
-
             crashCheck = blob[i].blobCrash(blob, i);
             if (crashCheck != -1) {
 
