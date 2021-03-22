@@ -176,13 +176,13 @@ void draw_all(simulation* sim, drawingData* draw)
 				angulo[n] = PI - sim->blob[n].angle;
 			}
 
-			if (sim->blob[n].tipo == 1)
+			if (sim->blob[n].tipo == BabyBlob)
 				//al_draw_rotated_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB1_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 				al_draw_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, flag);
-			else if (sim->blob[n].tipo == 2)
+			else if (sim->blob[n].tipo == GrownBlob)
 				al_draw_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, flag);
 				//al_draw_rotated_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB2_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
-			else if (sim->blob[n].tipo == 3)
+			else if (sim->blob[n].tipo == GoodOldBlob)
 				al_draw_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, flag);
 				//al_draw_rotated_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB3_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 		}

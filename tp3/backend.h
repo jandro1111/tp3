@@ -30,6 +30,7 @@ using namespace std;
 #define BLOB2_SIZE 45
 #define BLOB3_SIZE 80
 #define FOOD_SIZE 20
+#define UNMERGEABLETICKS 25
 
 #define MOD(x) ( ( (x)>=0 ) ? (x) : (-(x)) )
 

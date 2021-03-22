@@ -22,6 +22,7 @@ Blob::Blob(int type,int modo,double velpor,int velmaxi) {
         velmax=(rand() % velmaxi + 1);
         vel = velmax * velpor;
     }
+    CantMerge = 0;
 }
 //
 Blob::~Blob() {
@@ -186,7 +187,7 @@ int Blob::blobCrash(Blob* blobsArray, int blobIndex) {
     int BlobCrashedIndex;
 
     for (i = 0; (i < MAXBLOB) && (collision == false); i++) { //Checkeo colisiones con otros blobs
-        if (i != blobIndex) {
+        if ( (i != blobIndex) && (blobsArray[i].dead != true) && (blobsArray[i].CantMerge == 0)) {
             if (
                 (hitbox.arribader.x > (blobsArray[i]).hitbox.abajizq.x) &&
                 (hitbox.abajizq.x < (blobsArray[i]).hitbox.arribader.x) &&
@@ -229,7 +230,7 @@ int Blob::foodCrash(Food* f) {
             }
         }
     }
-    if (collision == true) {   //Si hubo una colision devuelvo el indice del blob con el cual colisione
+    if (collision == true) {   //Si hubo una colision devuelvo el indice de la comida con el cual colisione
 
         (f+EatenIndex)->shown = false;
         return EatenIndex;
@@ -291,6 +292,7 @@ void Blob::blobBirth(Blob* blobs) {
             (blobs[i]).tipo = BabyBlob;
             (blobs[i]).p.x = p.x;
             (blobs[i]).p.y = p.y;
+            (blobs[i]).CantMerge = UNMERGEABLETICKS;
 
             encontrado = true;
         }

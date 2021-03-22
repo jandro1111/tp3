@@ -39,6 +39,7 @@ public:
 	bool dead;
 	double vel;
 	int velmax;
+	int CantMerge;		
 	Rect hitbox;
 	//tipo 1 es de 40x40 5 de comida para generar otro
 	//tipo 2 45x45 4 de comida para generar otro
