@@ -22,14 +22,12 @@ void simulation::initSim(void){
     //inicializo la comida
 
     foodShown = 0;
-    //Food comid[MAXFOOD];
     comida = static_cast<Food*>(::operator new[](MAXFOOD * sizeof(Food)));
     
     for (int i = 0; i < MAXFOOD; ++i) {
         comida[i].shown = false;     //empizo sin mostrar ninguna comida
                                     //despues cuando spawneo la comida le inicializo el resto de los datos
     }
-    //comida = comid;
 }
 
 void simulation::runSim(void) {
@@ -69,11 +67,10 @@ void simulation::runSim(void) {
                 (blob[i].CantMerge)--;
             }
 
-            cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
+            //cout << i << " posicion x: " << blob[i].getposx() << " posicion y: " << blob[i].getposy() << " angulo: " << blob[i].getangle() << " muerto: " << blob[i].getdead() << endl;
         }
     }
     foodShown = foodspawn(foodCount, comida, foodShown);                   //genera de a una comida x vez
-    cout << foodShown << endl;
-    cout << "\n" << endl;
+
 }
 

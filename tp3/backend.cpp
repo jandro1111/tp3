@@ -225,7 +225,6 @@ int foodspawn(int foodmax, Food* f,int foodshown) {
                     (f + i)->hitbox.abajizq.y = ((f + i)->centro.y - 10);
                     (f + i)->hitbox.arribader.y = ((f + i)->centro.y + 10);
                     ++foodshown;
-                    cout << "x"<<(f + i)->centro.x<<"y: " << (f + i)->centro.x << endl;
                     break;
                 }
             }

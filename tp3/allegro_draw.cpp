@@ -330,9 +330,9 @@ void allegro_events(simulation* sim, drawingData* draw)
 				if(sim->velPorc < 0)
 					sim->velPorc = 0;
 				if (isButtonPress(draw, BUTTON5X, BUTTON5Y))
-					sim->deathChance += 0.1;
+					sim->deathChance += 0.01;
 				if (isButtonPress(draw, BUTTON6X, BUTTON6Y))
-					sim->deathChance -= 0.1;
+					sim->deathChance -= 0.01;
 				if (sim->deathChance < 0)
 					sim->deathChance = 0;
 				if (isButtonPress(draw, BUTTON7X, BUTTON7Y))
