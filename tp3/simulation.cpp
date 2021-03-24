@@ -8,7 +8,10 @@
 void simulation::initSim(void){
 
     //inicializo los blobs
-
+    deathChance = 0;
+    foodCount = 10;            // entre 0 y 100, empiza seteada en 10
+    smellRadius = 100;         //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
+    randomJiggleLimit = 180;
     velPorc = 0.5;
 
     blob = static_cast<Blob*>(::operator new[](MAXBLOB * sizeof(Blob)));

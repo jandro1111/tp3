@@ -40,11 +40,6 @@ int main(int argc, char** argv)
         cout << "Ingrese solo los datos pre-simulacion" << endl;
     }
 
-    Simu.deathChance = 0;           //sacar TODO LO SIGUIENTE cuando este la gui
-    Simu.foodCount = 10;            // entre 0 y 100, empiza seteada en 10
-    Simu.smellRadius = 100;         //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
-    Simu.randomJiggleLimit = 180;
-
     Simu.initSim();
 
     while (!drawing.do_exit) // idem anterior
