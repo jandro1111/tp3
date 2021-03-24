@@ -1,4 +1,19 @@
+/*****************************************************************************
+  @file     allegro_draw.cpp
+  @author   Grupo 1
+ ******************************************************************************/
+
 #include "allegro_draw.h"
+
+//Dibuja el menu y y los buffers
+void post_draw(simulation* sim, drawingData* draw);
+
+//Revisa si se presiono el boton indicado
+bool isButtonPress(drawingData* draw, float abajoizqx, float abajoizqy);
+
+//Cuanto los blobs con vida
+int countLiveBlobs(simulation* sim);
+
 
 drawingData::drawingData(void) {
 	background = NULL;
@@ -75,7 +90,7 @@ int allegro_start(drawingData* draw)
 		return -1;
 	}
 
-	draw->buffer2 = al_create_bitmap(300*SCREEN_SIZE, LARGOMAX);
+	draw->buffer2 = al_create_bitmap(OFFSET *SCREEN_SIZE, LARGOMAX);
 	if (!draw->buffer) {
 		fprintf(stderr, "failed to create buffer!\n");
 		return -1;
@@ -158,7 +173,6 @@ void draw_all(simulation* sim, drawingData* draw)
 	al_draw_bitmap(draw->background, 0, 0, 0);//se dibuja el fondo
 
 	int flag = ALLEGRO_FLIP_HORIZONTAL;
-	float angulo[MAXBLOB];
 	int n;
 
 	//Dibujo de blobs
@@ -166,25 +180,21 @@ void draw_all(simulation* sim, drawingData* draw)
 	{
 		if ( !(sim->blob[n].dead))
 		{
-			angulo[n] = -(sim->blob[n].angle);
+
 
 			flag = ALLEGRO_FLIP_HORIZONTAL;
 
-			if (sim->blob[n].angle <= (PI / 2) || sim->blob[n].angle >= ((3 / 2) * PI))
+			if ( (sim->blob[n].angle <= (PI / 2)) || (sim->blob[n].angle >= ((3.0 / 2.0) * PI)))
 			{
 				flag = 0;
-				angulo[n] = PI - sim->blob[n].angle;
 			}
 
 			if (sim->blob[n].tipo == BabyBlob)
-				//al_draw_rotated_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB1_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 				al_draw_bitmap(draw->blob1, sim->blob[n].p.x, sim->blob[n].p.y, flag);
 			else if (sim->blob[n].tipo == GrownBlob)
 				al_draw_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, flag);
-				//al_draw_rotated_bitmap(draw->blob2, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB2_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 			else if (sim->blob[n].tipo == GoodOldBlob)
 				al_draw_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, flag);
-				//al_draw_rotated_bitmap(draw->blob3, sim->blob[n].p.x, sim->blob[n].p.y, (sim->blob[n].hitbox.arribader.x) - BLOB3_SIZE, (sim->blob[n].hitbox.arribader.y), angulo[n], flag);
 		}
 	}
 
@@ -204,40 +214,80 @@ void draw_all(simulation* sim, drawingData* draw)
 
 void post_draw(simulation* sim, drawingData* draw)
 {
-
+	//boton de abrir y cerrar menu
 	al_draw_bitmap(draw->bmenu, BUTTON1X, BUTTON1Y - BUTTON_SIZE, 0);
+
+	//Ajuste de dibujo de la animacion de abrir y cerrar menu
+	if (draw->offset > 0 && draw->menu == false)
+		draw->offset -= 30 * SCREEN_SIZE;
+	else if (draw->offset < (OFFSET * SCREEN_SIZE) && draw->menu == true)
+		draw->offset += 30 * SCREEN_SIZE;
 
 	al_set_target_bitmap(draw->buffer2);
 
-	if (draw->offset > 0 && draw->menu == false)
-		draw->offset-=20*SCREEN_SIZE;
-	else if (draw->offset < (300* SCREEN_SIZE) && draw->menu == true)
-		draw->offset += 20 * SCREEN_SIZE;
-
+	//fondo negro del menu
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
+	//Regulador de velocidad
 	al_draw_bitmap(draw->flecha,BUTTON3X , BUTTON3Y-BUTTON_SIZE, 0);
 	al_draw_bitmap(draw->flecha, BUTTON4X, BUTTON4Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
-	al_draw_bitmap(draw->moreinfo, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
 
-	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY-20 , ALLEGRO_ALIGN_CENTER, "velocidad");
-	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY, ALLEGRO_ALIGN_CENTER, "%.0f%%", sim->velPorc*100);
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY , ALLEGRO_ALIGN_CENTER, "velocidad");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), VELX, VELY+20, ALLEGRO_ALIGN_CENTER, "%.0f%%", sim->velPorc*100);
 
-	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 110, ALLEGRO_ALIGN_LEFT, "Blobs con vida:");
-	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 130, ALLEGRO_ALIGN_LEFT, "%d", countLiveBlobs(sim));
+	//Regulador de probabilidad de muerte
+	al_draw_bitmap(draw->flecha, BUTTON5X, BUTTON5Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha, BUTTON6X, BUTTON6Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
 
-	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 160, ALLEGRO_ALIGN_LEFT, "Comida actual:");
-	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 180, ALLEGRO_ALIGN_LEFT, "%d", sim->foodShown);
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), MUEX, MUEY-5, ALLEGRO_ALIGN_CENTER, "probabilidad");
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), MUEX, MUEY+10, ALLEGRO_ALIGN_CENTER, "de muerte");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), MUEX, MUEY + 27, ALLEGRO_ALIGN_CENTER, "%.0f%%", sim->deathChance * 100);
 
-	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 210, ALLEGRO_ALIGN_LEFT, "Tiempo");
-	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), 130, 230, ALLEGRO_ALIGN_LEFT, "de simulacion:");
-	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), 130, 250, ALLEGRO_ALIGN_LEFT, "%d seg", (int)(al_get_timer_count(draw->timer)/10));
+	//Regulador de cantidad de alimento
+	al_draw_bitmap(draw->flecha, BUTTON7X, BUTTON7Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha, BUTTON8X, BUTTON8Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
 
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), ALX, ALY-5, ALLEGRO_ALIGN_CENTER, "comida");
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), ALX , ALY+10, ALLEGRO_ALIGN_CENTER, "maxima");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), ALX, ALY + 27, ALLEGRO_ALIGN_CENTER, "%d", sim->foodCount);
+
+	//Regulador de deteccion de comida
+	al_draw_bitmap(draw->flecha, BUTTON9X, BUTTON9Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha, BUTTON10X, BUTTON10Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), DETX, DETY-5, ALLEGRO_ALIGN_CENTER, "deteccion de"); 
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), DETX , DETY+10, ALLEGRO_ALIGN_CENTER, "comida");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), DETX, DETY + 27, ALLEGRO_ALIGN_CENTER, "%d%%", sim->smellRadius);
+
+	//Regulador de aleatoriedad de giro
+	al_draw_bitmap(draw->flecha, BUTTON11X, BUTTON11Y - BUTTON_SIZE, 0);
+	al_draw_bitmap(draw->flecha, BUTTON12X, BUTTON12Y - BUTTON_SIZE, ALLEGRO_FLIP_VERTICAL);
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), GIRX, GIRY-5, ALLEGRO_ALIGN_CENTER, "aleatoriedad");
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), GIRX , GIRY+10, ALLEGRO_ALIGN_CENTER, "de giro");
+		al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), GIRX, GIRY + 27, ALLEGRO_ALIGN_CENTER, "%d", sim->randomJiggleLimit);
+
+	//Texto informativo
+	
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y, ALLEGRO_ALIGN_LEFT, "Blobs con vida:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y +20, ALLEGRO_ALIGN_LEFT, "%d", countLiveBlobs(sim));
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y + 50, ALLEGRO_ALIGN_LEFT, "Comida actual:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y + 70, ALLEGRO_ALIGN_LEFT, "%d", sim->foodShown);
+
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y + 100, ALLEGRO_ALIGN_LEFT, "Tiempo");
+	al_draw_text(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y + 120, ALLEGRO_ALIGN_LEFT, "de simulacion:");
+	al_draw_textf(draw->font1, al_map_rgb(255, 255, 255), INFO_X, INFO_Y +140, ALLEGRO_ALIGN_LEFT, "%d seg", (int)(al_get_timer_count(draw->timer)/10));
+
+
+	//info extra
+	al_draw_bitmap(draw->moreinfo, BUTTON13X, BUTTON13Y - BUTTON_SIZE, 0);
 	if (draw->info==true)
 		al_draw_text(draw->font2, al_map_rgb(255, 255, 255), 40, 400, ALLEGRO_ALIGN_LEFT, "Realizado por Matias, Damian y Alejandro");
 
+	//Dibujo de los 2 buffer en el display
 	al_set_target_backbuffer(draw->display);
-	al_draw_scaled_bitmap(draw->buffer2, 0, 0, 300, LARGOMAX, 0, 0, 300* SCREEN_SIZE, SCREEN_H, 0);
+	al_draw_scaled_bitmap(draw->buffer2, 0, 0, OFFSET, LARGOMAX, 0, 0, OFFSET * SCREEN_SIZE, SCREEN_H, 0);
 	al_draw_scaled_bitmap(draw->buffer,0,0,ANCHOMAX,LARGOMAX,draw->offset,0,SCREEN_W,SCREEN_H,0);
 	
 	al_flip_display();
@@ -263,6 +313,7 @@ void allegro_events(simulation* sim, drawingData* draw)
 			draw->pointer_x = ev.mouse.x/SCREEN_SIZE;
 		}
 
+		//deteccion de botnes
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
 			if (isButtonPress(draw, BUTTON1X, BUTTON1Y) && draw->menu == false)
@@ -278,8 +329,27 @@ void allegro_events(simulation* sim, drawingData* draw)
 					sim->velPorc -= 0.1;
 				if(sim->velPorc < 0)
 					sim->velPorc = 0;
+				if (isButtonPress(draw, BUTTON5X, BUTTON5Y))
+					sim->deathChance += 0.1;
+				if (isButtonPress(draw, BUTTON6X, BUTTON6Y))
+					sim->deathChance -= 0.1;
+				if (sim->deathChance < 0)
+					sim->deathChance = 0;
+				if (isButtonPress(draw, BUTTON7X, BUTTON7Y))
+					sim->foodCount += 1;
+				if (isButtonPress(draw, BUTTON8X, BUTTON8Y) && (sim->foodCount > 0))
+					sim->foodCount -= 1;
+				if (isButtonPress(draw, BUTTON9X, BUTTON9Y))
+					sim->smellRadius += 10;
+				if (isButtonPress(draw, BUTTON10X, BUTTON10Y) && (sim->smellRadius > 0))
+					sim->smellRadius -= 10;
+				if (isButtonPress(draw, BUTTON11X, BUTTON11Y))
+					sim->randomJiggleLimit += 1;
+				if (isButtonPress(draw, BUTTON12X, BUTTON12Y) && (sim->randomJiggleLimit > 0))
+					sim->randomJiggleLimit -= 1;
+
 			}
-			if (isButtonPress(draw, BUTTON5X, BUTTON5Y))
+			if (isButtonPress(draw, BUTTON13X, BUTTON13Y))
 			{
 				if (draw->info == false)
 					draw->info = true;
@@ -313,3 +383,7 @@ int countLiveBlobs (simulation* sim)
 	}
 	return i;
 }
+
+/*for (k = 0; k < 2.0; k++)
+{
+	if (((sim->blob[n].angle <= ((PI / 2) + k * 2.0 * PI)) && (sim->blob[n].angle >= (k * 2.0 * PI))) || ((sim->blob[n].angle >= (((3 / 2) * PI) + k * 2.0 * PI)) && (sim->blob[n].angle <= ((k + 1.0) * 2.0 * PI))))*/

@@ -1,5 +1,17 @@
-// tp3.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*****************************************************************************
+  @file     tp3.cpp (main)
+  @author   Grupo 1
+ ******************************************************************************/
+/**************************************
+   _____                          __ 
+  / ____|                        /_ |
+ | |  __ _ __ _   _ _ __   ___    | |
+ | | |_ | '__| | | | '_ \ / _ \   | |
+ | |__| | |  | |_| | |_) | (_) |  | |
+  \_____|_|   \__,_| .__/ \___/   |_|
+                   | |               
+                   |_|               
+***************************************/
 
 #include "backend.h"
 #include "Blob.h"
@@ -31,7 +43,7 @@ int main(int argc, char** argv)
     printf("modo: %d, velMax: %d, blobsCantIni: %d\n", Simu.modo, Simu.velMax, Simu.blobsCantIni);
 
     Simu.deathChance = 0;           //sacar TODO LO SIGUIENTE cuando este la gui
-    Simu.foodCount = 30;            // entre 0 y 100, empiza seteada en 10
+    Simu.foodCount = 10;            // entre 0 y 100, empiza seteada en 10
     Simu.smellRadius = 100;         //el minimo deberia ser 40, que es el tamaño de la hitbox del blob chiquito
     Simu.randomJiggleLimit = 180;
 
